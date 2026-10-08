@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cadence Support</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500&display=swap" rel="stylesheet">
+<style>
+  /* Tokens transcribed exactly from ios/Cadence/Theme.swift — the app's
+     own "near-monochrome + one highlight" palette, not a separate guess. */
+  :root {
+    --bg: #FAFAFA;
+    --surface: #FFFFFF;
+    --surface-alt: #F0F0F0;
+    --divider: #E2E2E2;
+    --text: #141414;
+    --body-text: #3A3A3A;
+    --meta: #6E6E6E;
+    --label: #4A4A4A;
+    --good: #2F6A48;
+    --accent: #141414;
+    --on-accent: #FFFFFF;
+    --shadow: 0 1px 2px rgba(20, 20, 20, 0.04), 0 8px 24px rgba(20, 20, 20, 0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0C0C0C;
+      --surface: #1A1A1A;
+      --surface-alt: #131313;
+      --divider: #2E2E2E;
+      --text: #F5F5F5;
+      --body-text: #D0D0D0;
+      --meta: #8A8A8A;
+      --label: #B5B5B5;
+      --good: #5FBF8F;
+      --accent: #F5F5F5;
+      --on-accent: #000000;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0C0C0C;
+    --surface: #1A1A1A;
+    --surface-alt: #131313;
+    --divider: #2E2E2E;
+    --text: #F5F5F5;
+    --body-text: #D0D0D0;
+    --meta: #8A8A8A;
+    --label: #B5B5B5;
+    --good: #5FBF8F;
+    --accent: #F5F5F5;
+    --on-accent: #000000;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+  }
+  main {
+    width: 100%;
+    max-width: 640px;
+    padding: 48px 20px 64px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 28px;
+  }
+  .brand svg { width: 29px; height: 29px; flex-shrink: 0; }
+  .brand-word {
+    font-family: "Sora", -apple-system, sans-serif;
+    font-weight: 500;
+    font-size: 19px;
+    letter-spacing: -0.035em;
+    color: var(--text);
+  }
+
+  h1 {
+    font-size: 28px;
+    line-height: 1.25;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .lede {
+    color: var(--body-text);
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 0 0 32px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--divider);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 22px 22px 24px;
+    margin-bottom: 20px;
+  }
+  .card h2 {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0 0 6px;
+  }
+  .card p {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--body-text);
+    margin: 0 0 14px;
+  }
+
+  .email-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .email-text {
+    font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+    font-size: 14.5px;
+    background: var(--surface-alt);
+    color: var(--text);
+    padding: 9px 12px;
+    border-radius: 10px;
+    user-select: all;
+    -webkit-user-select: all;
+  }
+  button.copy-btn {
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--on-accent);
+    background: var(--accent);
+    border: none;
+    border-radius: 10px;
+    padding: 9px 14px;
+    cursor: pointer;
+  }
+  button.copy-btn:active { opacity: 0.75; }
+
+  .topics { margin: 0; padding: 0; }
+  .topic {
+    padding: 14px 0;
+    border-top: 1px solid var(--divider);
+  }
+  .topic:first-child { border-top: none; padding-top: 0; }
+  .topic h3 {
+    font-size: 14.5px;
+    font-weight: 600;
+    margin: 0 0 4px;
+  }
+  .topic p {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--body-text);
+    margin: 0;
+  }
+
+  footer {
+    margin-top: 36px;
+    font-size: 12.5px;
+    color: var(--meta);
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+  <main>
+    <div class="brand">
+      <!-- Three round-capped diagonal strides, the last one lit — per
+           Theme.swift's CadenceMark construction spec (32-unit grid). -->
+      <svg viewBox="0 0 32 32" role="img" aria-label="Cadence">
+        <line x1="4.5" y1="27" x2="9.5" y2="13" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.55"></line>
+        <line x1="13.5" y1="23" x2="18.5" y2="9" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.5"></line>
+        <line x1="22.5" y1="19" x2="27.5" y2="5" stroke="var(--good)" stroke-width="5" stroke-linecap="round"></line>
+      </svg>
+      <span class="brand-word">cadence</span>
+    </div>
+
+    <h1>Support</h1>
+    <p class="lede">
+      Questions, bugs, or feedback about Cadence Race Fit — reach us directly below.
+      We read and reply to every message ourselves.
+    </p>
+
+    <div class="card">
+      <h2>Contact</h2>
+      <p>Email us and we'll get back to you, usually within a couple of days.</p>
+      <div class="email-row">
+        <span class="email-text" id="supportEmail">jjcetinkayatri@gmail.com</span>
+        <button class="copy-btn" id="copyBtn" type="button">Copy</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Common questions</h2>
+      <ul class="topics" style="list-style: none;">
+        <li class="topic">
+          <h3>Sign-in with Google or Apple isn't working</h3>
+          <p>Make sure you're connected to the internet and using the latest version of the app from the App Store. If a sign-in sheet doesn't open or closes immediately, force-quit Cadence and try again — if that doesn't help, email us with your device model and iOS version.</p>
+        </li>
+        <li class="topic">
+          <h3>My Strava data isn't syncing</h3>
+          <p>Open Settings inside Cadence and check that Strava is still connected — Strava access can expire and need reconnecting. New activities can take a few minutes to appear after you finish a Strava sync.</p>
+        </li>
+        <li class="topic">
+          <h3>A race prediction looks wrong</h3>
+          <p>Predictions improve as more of your training history syncs in, and factor in course elevation and surface — a result can look off early on, or for a race type you haven't run before. Tell us the race and what looked wrong and we'll take a look.</p>
+        </li>
+        <li class="topic">
+          <h3>I want my data exported or deleted</h3>
+          <p>Email us from the address associated with your account and we'll export or permanently delete your data, usually within a few business days.</p>
+        </li>
+      </ul>
+    </div>
+
+    <footer>
+      Cadence Race Fit for iOS.
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      var btn = document.getElementById('copyBtn');
+      var text = document.getElementById('supportEmail');
+      if (!btn || !text) return;
+      btn.addEventListener('click', function () {
+        var value = text.textContent || '';
+        function done() {
+          var original = btn.textContent;
+          btn.textContent = 'Copied';
+          setTimeout(function () { btn.textContent = original; }, 1500);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(value).then(done).catch(done);
+        } else {
+          done();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
