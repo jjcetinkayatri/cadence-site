@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cadence Terms & Conditions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500&display=swap" rel="stylesheet">
+<style>
+  /* Tokens transcribed exactly from ios/Cadence/Theme.swift, same as the
+     support page (index.html) at this site's root — one shared palette. */
+  :root {
+    --bg: #FAFAFA;
+    --surface: #FFFFFF;
+    --surface-alt: #F0F0F0;
+    --divider: #E2E2E2;
+    --text: #141414;
+    --body-text: #3A3A3A;
+    --meta: #6E6E6E;
+    --label: #4A4A4A;
+    --good: #2F6A48;
+    --accent: #141414;
+    --on-accent: #FFFFFF;
+    --shadow: 0 1px 2px rgba(20, 20, 20, 0.04), 0 8px 24px rgba(20, 20, 20, 0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0C0C0C;
+      --surface: #1A1A1A;
+      --surface-alt: #131313;
+      --divider: #2E2E2E;
+      --text: #F5F5F5;
+      --body-text: #D0D0D0;
+      --meta: #8A8A8A;
+      --label: #B5B5B5;
+      --good: #5FBF8F;
+      --accent: #F5F5F5;
+      --on-accent: #000000;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0C0C0C;
+    --surface: #1A1A1A;
+    --surface-alt: #131313;
+    --divider: #2E2E2E;
+    --text: #F5F5F5;
+    --body-text: #D0D0D0;
+    --meta: #8A8A8A;
+    --label: #B5B5B5;
+    --good: #5FBF8F;
+    --accent: #F5F5F5;
+    --on-accent: #000000;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+  }
+  main {
+    width: 100%;
+    max-width: 680px;
+    padding: 48px 20px 64px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 28px;
+  }
+  .brand svg { width: 29px; height: 29px; flex-shrink: 0; }
+  .brand-word {
+    font-family: "Sora", -apple-system, sans-serif;
+    font-weight: 500;
+    font-size: 19px;
+    letter-spacing: -0.035em;
+    color: var(--text);
+  }
+
+  h1 {
+    font-size: 28px;
+    line-height: 1.25;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .lede {
+    color: var(--body-text);
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 0 0 8px;
+  }
+  .asof {
+    color: var(--meta);
+    font-size: 13px;
+    margin: 0 0 32px;
+  }
+
+  .legal {
+    background: var(--surface);
+    border: 1px solid var(--divider);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 28px 26px 30px;
+  }
+  .legal h2 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 28px 0 8px;
+  }
+  .legal h2:first-child { margin-top: 0; }
+  .legal p {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--body-text);
+    margin: 0 0 14px;
+  }
+  .legal ol, .legal ul {
+    margin: 0 0 14px;
+    padding-left: 20px;
+  }
+  .legal li {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--body-text);
+    margin-bottom: 8px;
+  }
+  .legal strong { color: var(--text); font-weight: 600; }
+  .legal a { color: var(--text); }
+
+  footer {
+    margin-top: 36px;
+    font-size: 12.5px;
+    color: var(--meta);
+    line-height: 1.6;
+  }
+  footer a { color: var(--meta); }
+</style>
+</head>
+<body>
+  <main>
+    <div class="brand">
+      <svg viewBox="0 0 32 32" role="img" aria-label="Cadence">
+        <line x1="4.5" y1="27" x2="9.5" y2="13" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.55"></line>
+        <line x1="13.5" y1="23" x2="18.5" y2="9" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.5"></line>
+        <line x1="22.5" y1="19" x2="27.5" y2="5" stroke="var(--good)" stroke-width="5" stroke-linecap="round"></line>
+      </svg>
+      <span class="brand-word">cadence</span>
+    </div>
+
+    <h1>Terms &amp; Conditions</h1>
+    <p class="lede">These Terms &amp; Conditions ("Terms") are an agreement between you and Cadence ("Cadence," "we," "us") governing your use of the Cadence iOS app and any related services (the "Service").</p>
+    <p class="asof">Last updated October 13, 2026</p>
+
+    <div class="legal">
+      <h2>Agreement to these terms</h2>
+      <p>By downloading, installing, or using Cadence, you agree to these Terms. If you don't agree, don't use the Service.</p>
+      <p>Cadence is a race-fitness app: it predicts your finish time for a given race based on your fitness data (power curve, pace, Strava history, or manually entered numbers) and the race's own course profile, and offers planning tools (Season plan, taper guidance, calibration tracking) on top of that. It is not a coaching service, a medical device, or a substitute for professional athletic or medical advice (see "Not medical advice" below).</p>
+      <p>Cadence works fully without an account: all core features are available with purely local, on-device data. Creating an account is optional and only adds cross-device sync.</p>
+
+      <h2>Eligibility and accounts</h2>
+      <p>You must be at least 13 years old to use Cadence. If you're under the age of majority where you live, you confirm a parent or guardian has reviewed and agreed to these Terms on your behalf.</p>
+      <p>Creating an account is optional. If you do, you're responsible for keeping your password confidential and for all activity under your account. Tell us right away at the contact address below if you suspect unauthorized access. You can sign up with an email and password, or use Sign in with Apple or Sign in with Google, which rely on those providers to confirm who you are rather than a password you set with us.</p>
+
+      <h2>Subscriptions (Season plan)</h2>
+      <p>Cadence's core features (fit reports, race predictions, calibration tracking) are free. Season is an optional, auto-renewing monthly subscription that adds Strava auto-sync, season-wide planning, deterministic taper guidance, and an uncapped alert quota.</p>
+      <p>Payment is charged to your Apple ID account at confirmation of purchase. Season renews monthly unless auto-renew is turned off at least 24 hours before the current period ends. You can manage or cancel your subscription anytime in your Apple ID account settings; Cadence itself has no separate cancellation mechanism, since all billing runs through Apple's In-App Purchase system.</p>
+      <p>If your subscription lapses or is refunded, your account reverts to the Free plan, and any tracked races beyond the Free plan's limit are handled per the in-app downgrade flow. Accuracy itself (the confidence tier, limiter, and predicted range on any report) is identical on both plans and is never a paid feature.</p>
+
+      <h2>Acceptable use</h2>
+      <p>You agree not to:</p>
+      <ol>
+        <li>Use Cadence for any unlawful purpose, or in a way that violates another person's rights.</li>
+        <li>Attempt to reverse engineer, decompile, or extract the prediction model or source code.</li>
+        <li>Scrape, mass-download, or systematically harvest race, course, or other data from the Service.</li>
+        <li>Interfere with the Service's normal operation, including attempting to bypass subscription gating or rate limits.</li>
+        <li>Upload a GPX file or other content you don't have the right to share, or that's deliberately false or misleading about a real race course.</li>
+        <li>Impersonate another person or misrepresent your affiliation with any person or organization.</li>
+      </ol>
+      <p>We may suspend or terminate access for an account that violates these rules.</p>
+
+      <h2>Not medical advice</h2>
+      <p>Cadence's predictions, feasibility verdicts, readiness scores, and taper guidance are statistical estimates derived from your own fitness data and course information. They are not medical advice, a medical device, or a substitute for guidance from a qualified physician, coach, or physical therapist.</p>
+      <p>Endurance racing and training carry inherent physical risk, including the risk of injury. Consult a doctor before beginning or changing a training program, especially if you have an existing health condition. Cadence has no way to know your full medical history and cannot account for it. You're solely responsible for deciding whether to participate in any race or follow any plan the app suggests.</p>
+
+      <h2>Third-party services</h2>
+      <p>Cadence integrates with services we don't control, including Strava (read-only activity sync), Sign in with Apple and Sign in with Google (identity verification), Apple's In-App Purchase system (billing), and several public race-listing and course-data sources (RunSignup/BikeSignup, RaceRoster, RideWithGPS, OpenTopography, and similar). Your use of any of these is also governed by that provider's own terms, which we don't control and aren't responsible for.</p>
+      <p>Race and course information drawn from these public sources may be incomplete or out of date. Always verify race details (date, course, cutoffs) directly with the race organizer before relying on them.</p>
+
+      <h2>Intellectual property</h2>
+      <p>The Cadence app, its design, its prediction model, and its underlying code are owned by us and protected by copyright and other intellectual property laws. These Terms give you a personal, non-transferable license to use the app for its intended purpose; they don't transfer any ownership to you.</p>
+      <p>You keep ownership of your own fitness data and any GPX file you upload. By uploading a GPX file for a race with no elevation data on file, you grant us a license to derive and cache elevation figures from it and show those derived figures to other athletes viewing the same race, as described in the Privacy Policy; you can remove your own contribution at any time from within the app.</p>
+
+      <h2>Termination</h2>
+      <p>You can stop using Cadence and delete your account at any time from within the app. We may suspend or terminate your account if you violate these Terms, including the Acceptable Use section above.</p>
+      <p>Deleting your account removes your account data per the Privacy Policy. It doesn't retroactively cancel an active Apple subscription; cancel that separately through your Apple ID account settings, as described under Subscriptions above.</p>
+
+      <h2>Disclaimer of warranties</h2>
+      <p>Cadence is provided "as is" and "as available," without warranties of any kind, express or implied, including fitness for a particular purpose, merchantability, or non-infringement. We don't guarantee the Service will be uninterrupted, error-free, or that any prediction will match your actual race result.</p>
+
+      <h2>Limitation of liability</h2>
+      <p>To the fullest extent permitted by law, we aren't liable for any indirect, incidental, or consequential damages arising from your use of Cadence, including any injury sustained during training or a race, or any decision made based on a prediction, feasibility verdict, or planning guidance the app provides. Our total liability for any claim arising from these Terms is limited to the amount you paid us, if any, in the 12 months before the claim arose.</p>
+
+      <h2>Governing law</h2>
+      <p>Cadence is developed and operated by an individual based in British Columbia, Canada. These Terms are governed by the laws of the Province of British Columbia and the federal laws of Canada applicable therein, without regard to conflict-of-law principles. Any dispute arising from these Terms is subject to the exclusive jurisdiction of the courts located in British Columbia.</p>
+
+      <h2>Changes to these terms</h2>
+      <p>If we make a material change, we'll update the date at the top of this page and, where practical, notify you in the app. Continuing to use Cadence after a change takes effect means you accept the updated Terms.</p>
+
+      <h2>Contact</h2>
+      <p>Questions about these Terms: <a href="mailto:jjcetinkayatri@gmail.com">jjcetinkayatri@gmail.com</a></p>
+    </div>
+
+    <footer>
+      Cadence Race Fit for iOS. See also our <a href="/privacy">Privacy Policy</a> and <a href="/">Support</a> page.
+    </footer>
+  </main>
+</body>
+</html>
