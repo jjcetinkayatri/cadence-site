@@ -176,6 +176,33 @@
   .price-row .pr-val { text-align: center; color: var(--body-text); font-size: 13px; }
   .price-foot { padding: 16px 22px; font-size: 12px; color: var(--meta); text-align: center; border-top: 1px solid var(--divider); }
 
+  /* FAQ */
+  .faq { padding: 8px 0 80px; }
+  .faq .section-head { text-align: center; }
+  .faq .section-head p { margin-inline: auto; }
+  .faq-list { display: flex; flex-direction: column; gap: 10px; max-width: 700px; margin: 0 auto; }
+  details.faq-item {
+    background: var(--surface); border: 1px solid var(--divider); border-radius: 14px;
+    overflow: hidden;
+  }
+  details.faq-item summary {
+    list-style: none; cursor: pointer; padding: 16px 18px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    font-size: 14.5px; font-weight: 600;
+  }
+  details.faq-item summary::-webkit-details-marker { display: none; }
+  details.faq-item summary .chevron {
+    flex: none; width: 18px; height: 18px; color: var(--meta);
+    transition: transform 0.18s ease;
+  }
+  details.faq-item[open] summary .chevron { transform: rotate(180deg); }
+  details.faq-item .faq-answer {
+    padding: 0 18px 18px; font-size: 13.5px; line-height: 1.6; color: var(--body-text);
+  }
+  details.faq-item summary:focus-visible {
+    outline: 2px solid var(--good); outline-offset: -2px;
+  }
+
   footer {
     margin-top: 24px; padding-top: 28px; border-top: 1px solid var(--divider);
     display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between;
@@ -202,6 +229,7 @@
     <div class="nav-links">
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
       <a href="/support">Support</a>
     </div>
   </nav>
@@ -294,6 +322,76 @@
       <div class="price-row"><span class="pr-feature">Season planning + taper guidance</span><span class="pr-val">&ndash;</span><span class="pr-val check">&#10003;</span></div>
       <div class="price-row"><span class="pr-feature">Strava auto-sync</span><span class="pr-val">&ndash;</span><span class="pr-val check">&#10003;</span></div>
       <div class="price-foot">Billed monthly through your Apple ID. Cancel anytime in Settings.</div>
+    </div>
+  </section>
+
+  <section id="faq" class="faq">
+    <div class="section-head">
+      <h2>Questions people actually ask</h2>
+      <p>Straight answers, grounded in how the app actually works.</p>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item" open>
+        <summary>
+          <span>I entered my power/pace data manually. If I connect Strava later, does it get overwritten?</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="faq-answer">No. Cadence keeps whichever number is better, field by field. If your manual entry is already your real best effort, Strava syncing in afterward won't replace it. Only a genuinely better activity from Strava updates that specific number. Each field also shows exactly where it came from, so you always know.</div>
+      </details>
+      <details class="faq-item">
+        <summary>
+          <span>Does Cadence work for triathlon, swimming, or other sports?</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="faq-answer">Not yet. Cadence is built specifically for running and cycling races today: road, trail, and gravel included. Other sports aren't on the current roadmap.</div>
+      </details>
+      <details class="faq-item">
+        <summary>
+          <span>Which countries' races does Cadence cover?</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="faq-answer">The race catalog today covers the US and Canada. We're not in other countries yet.</div>
+      </details>
+      <details class="faq-item">
+        <summary>
+          <span>What happens if I cancel Season?</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="faq-answer">Turning off auto-renew keeps your full Season access through the end of the period you already paid for. You won't be charged again, but you're not cut off early either. Once that period ends (or if a refund/revocation happens), your account reverts to Free right away.</div>
+      </details>
+      <details class="faq-item">
+        <summary>
+          <span>Is Free's accuracy worse than Season's?</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="faq-answer">No. Confidence tier, limiter, and predicted range are identical on both plans. Season adds unlimited tracking, Strava auto-sync, and season planning. Accuracy is never a paid feature.</div>
+      </details>
+      <details class="faq-item">
+        <summary>
+          <span>Why does Max HR show as &quot;Measured&quot; even when I typed it in myself?</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="faq-answer">Unlike a field like FTP, which can be estimated or computed from other numbers, your max heart rate isn't something you can reasonably guess. Whatever you enter came from a real effort you actually observed, whether that's a heart rate monitor reading or a race you remember clearly. So Cadence treats it as measured the moment it's on file, no matter the source, rather than starting it in a lower-trust tier the way it does for fields that really are just estimates until confirmed.</div>
+      </details>
+      <details class="faq-item">
+        <summary>
+          <span>What do the labels on my Profile metrics mean?</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="faq-answer">
+          <p style="margin:0 0 10px;">Each metric on your Profile carries two separate pieces of information: a trust tier (how confident the app is in that number) and a source (where it actually came from).</p>
+          <p style="margin:0 0 6px;"><strong>Trust tier:</strong></p>
+          <ul style="margin:0 0 10px; padding-left:18px;">
+            <li><strong>Measured</strong> &ndash; a real recorded effort, not an estimate (your max heart rate, or an FTP backed by an actual power-curve reading).</li>
+            <li><strong>Self-reported</strong> &ndash; a number you typed in that isn't backed by that kind of underlying data yet (Weight is always this, since Strava has no weight field to sync). Still used for predictions, just with wider bands until confirmed.</li>
+            <li><strong>Corrected by you</strong> &ndash; you used &quot;This looks wrong&quot; to override what the app had on file.</li>
+            <li><strong>Verified</strong> &ndash; shown for race results once you've confirmed at least one real finish time.</li>
+            <li><strong>Missing</strong> &ndash; nothing on file yet for that field.</li>
+          </ul>
+          <p style="margin:0 0 6px;"><strong>Source:</strong> &quot;Entered by you&quot; or &quot;Synced from Strava&quot;. Literally where that number came from. Weight always shows &quot;Entered by you,&quot; even with Strava connected, since Strava's API never provides it.</p>
+          <p style="margin:0;">The colored freshness bar reflects how recent that data is. It fades as a measurement ages, since the model trusts an old number a little less than a fresh one.</p>
+        </div>
+      </details>
     </div>
   </section>
 
