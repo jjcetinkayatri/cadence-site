@@ -4,6 +4,15 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Cadence Privacy Policy</title>
+<script>
+  // Must run before first paint — see theme-toggle.js's own comment.
+  (function () {
+    try {
+      var t = localStorage.getItem('cadence-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500&display=swap" rel="stylesheet">
@@ -79,7 +88,6 @@
     display: flex;
     align-items: center;
     gap: 9px;
-    margin-bottom: 28px;
     text-decoration: none;
   }
   .brand svg { width: 29px; height: 29px; flex-shrink: 0; }
@@ -89,6 +97,34 @@
     font-size: 19px;
     letter-spacing: -0.035em;
     color: var(--text);
+  }
+
+  /* Persistent top nav — same structure/links as the homepage's own <nav>,
+     so every page keeps the same way back to Features/Pricing/FAQ/Release
+     Notes/Support rather than only a bare logo link home. */
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 36px;
+  }
+  .nav-right { display: flex; align-items: center; gap: 20px; }
+  .nav-links { display: flex; gap: 22px; }
+  .nav-links a { font-size: 13px; font-weight: 600; color: var(--meta); text-decoration: none; white-space: nowrap; }
+  .nav-links a:hover { color: var(--text); }
+
+  .theme-toggle { display: flex; gap: 2px; background: var(--surface-alt); border: 1px solid var(--divider); border-radius: 999px; padding: 3px; flex: none; }
+  .theme-toggle button {
+    display: flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; border: none; background: transparent; border-radius: 999px;
+    color: var(--meta); cursor: pointer; padding: 0;
+  }
+  .theme-toggle button svg { width: 14px; height: 14px; }
+  .theme-toggle button:hover { color: var(--text); }
+  .theme-toggle button.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
+
+  @media (max-width: 560px) {
+    nav { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .nav-right { flex-wrap: wrap; gap: 14px; }
+    .nav-links { gap: 16px; flex-wrap: wrap; }
   }
 
   h1 {
@@ -152,14 +188,36 @@
 </head>
 <body>
   <main>
-    <a class="brand" href="/" aria-label="Cadence home">
-      <svg viewBox="0 0 32 32" role="img" aria-label="Cadence">
-        <line x1="4.5" y1="27" x2="9.5" y2="13" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.55"></line>
-        <line x1="13.5" y1="23" x2="18.5" y2="9" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.5"></line>
-        <line x1="22.5" y1="19" x2="27.5" y2="5" stroke="var(--good)" stroke-width="5" stroke-linecap="round"></line>
-      </svg>
-      <span class="brand-word">cadence</span>
-    </a>
+    <nav>
+      <a class="brand" href="/" aria-label="Cadence home">
+        <svg viewBox="0 0 32 32" role="img" aria-label="Cadence">
+          <line x1="4.5" y1="27" x2="9.5" y2="13" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.55"></line>
+          <line x1="13.5" y1="23" x2="18.5" y2="9" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.5"></line>
+          <line x1="22.5" y1="19" x2="27.5" y2="5" stroke="var(--good)" stroke-width="5" stroke-linecap="round"></line>
+        </svg>
+        <span class="brand-word">cadence</span>
+      </a>
+      <div class="nav-right">
+        <div class="nav-links">
+          <a href="/#features">Features</a>
+          <a href="/#pricing">Pricing</a>
+          <a href="/#faq">FAQ</a>
+          <a href="/release-notes">Release Notes</a>
+          <a href="/support">Support</a>
+        </div>
+        <div class="theme-toggle" role="group" aria-label="Appearance">
+          <button type="button" data-theme-choice="system" aria-label="System appearance" aria-pressed="false">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"></circle><path d="M12 3a9 9 0 000 18z" fill="currentColor"></path></svg>
+          </button>
+          <button type="button" data-theme-choice="light" aria-label="Light appearance" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+          </button>
+          <button type="button" data-theme-choice="dark" aria-label="Dark appearance" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg>
+          </button>
+        </div>
+      </div>
+    </nav>
 
     <h1>Privacy Policy</h1>
     <p class="lede">Cadence predicts how a race's distance and climbing will actually feel for your own fitness, and tracks whether that prediction held up once you've raced it. This policy covers exactly what the app and its backend collect to do that, and nothing else.</p>
@@ -221,5 +279,6 @@
       Cadence Sports Race Prediction for iOS. Developed and operated by an individual based in British Columbia, Canada. See also our <a href="/terms">Terms &amp; Conditions</a> and <a href="/">Support</a> page.
     </footer>
   </main>
+<script src="/theme-toggle.js"></script>
 </body>
 </html>
