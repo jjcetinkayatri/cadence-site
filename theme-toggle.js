@@ -86,4 +86,31 @@
     }, { rootMargin: '-100px 0px -60% 0px', threshold: 0 });
     sections.forEach(function (section) { observer.observe(section); });
   }
+
+  // TEMPORARY diagnostic badge — not a feature, just a way to get exact
+  // numbers instead of guessing from a screen recording. Shows nav's live
+  // position/width so a real difference between pages shows up as a
+  // number change, not something to eyeball. Remove once the nav-moves
+  // report is confirmed fixed.
+  (function () {
+    var badge = document.createElement('div');
+    badge.style.cssText = 'position:fixed;bottom:8px;right:8px;z-index:99999;' +
+      'background:rgba(0,0,0,0.82);color:#5FBF8F;font:11px/1.5 ui-monospace,monospace;' +
+      'padding:6px 9px;border-radius:8px;pointer-events:none;white-space:pre;';
+    document.body.appendChild(badge);
+    function report() {
+      var nav = document.querySelector('nav');
+      if (!nav) return;
+      var r = nav.getBoundingClientRect();
+      badge.textContent =
+        'nav left=' + Math.round(r.left) + ' width=' + Math.round(r.width) + ' top=' + Math.round(r.top) + '\n' +
+        'win=' + window.innerWidth + 'x' + window.innerHeight +
+        ' docH=' + document.documentElement.scrollHeight +
+        ' scrollY=' + Math.round(window.scrollY);
+    }
+    report();
+    window.addEventListener('resize', report);
+    window.addEventListener('scroll', report, { passive: true });
+    setInterval(report, 500);
+  })();
 })();
