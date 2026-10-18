@@ -82,7 +82,6 @@
     display: flex;
     align-items: center;
     gap: 9px;
-    margin-bottom: 28px;
   }
   .brand svg { width: 29px; height: 29px; flex-shrink: 0; }
   .brand-word {
@@ -91,6 +90,22 @@
     font-size: 19px;
     letter-spacing: -0.035em;
     color: var(--text);
+  }
+
+  /* Persistent top nav — same structure/links as the homepage's own <nav>,
+     so every page keeps the same way back to Features/Pricing/FAQ/Release
+     Notes/Support rather than only a bare logo link home. */
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 36px;
+  }
+  .nav-brand-link { text-decoration: none; }
+  .nav-links { display: flex; gap: 22px; }
+  .nav-links a { font-size: 13px; font-weight: 600; color: var(--meta); text-decoration: none; white-space: nowrap; }
+  .nav-links a:hover { color: var(--text); }
+  @media (max-width: 560px) {
+    nav { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .nav-links { gap: 16px; flex-wrap: wrap; }
   }
 
   h1 {
@@ -205,18 +220,27 @@
 </head>
 <body>
   <main>
-    <a href="/" style="text-decoration:none;">
-      <div class="brand">
-        <!-- Three round-capped diagonal strides, the last one lit — per
-             Theme.swift's CadenceMark construction spec (32-unit grid). -->
-        <svg viewBox="0 0 32 32" role="img" aria-label="Cadence">
-          <line x1="4.5" y1="27" x2="9.5" y2="13" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.55"></line>
-          <line x1="13.5" y1="23" x2="18.5" y2="9" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.5"></line>
-          <line x1="22.5" y1="19" x2="27.5" y2="5" stroke="var(--good)" stroke-width="5" stroke-linecap="round"></line>
-        </svg>
-        <span class="brand-word">cadence</span>
+    <nav>
+      <a class="nav-brand-link" href="/">
+        <div class="brand">
+          <!-- Three round-capped diagonal strides, the last one lit — per
+               Theme.swift's CadenceMark construction spec (32-unit grid). -->
+          <svg viewBox="0 0 32 32" role="img" aria-label="Cadence">
+            <line x1="4.5" y1="27" x2="9.5" y2="13" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.55"></line>
+            <line x1="13.5" y1="23" x2="18.5" y2="9" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.5"></line>
+            <line x1="22.5" y1="19" x2="27.5" y2="5" stroke="var(--good)" stroke-width="5" stroke-linecap="round"></line>
+          </svg>
+          <span class="brand-word">cadence</span>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="/#features">Features</a>
+        <a href="/#pricing">Pricing</a>
+        <a href="/#faq">FAQ</a>
+        <a href="/release-notes">Release Notes</a>
+        <a href="/support">Support</a>
       </div>
-    </a>
+    </nav>
 
     <h1>Support</h1>
     <p class="lede">
