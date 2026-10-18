@@ -69,6 +69,13 @@
   }
 
   * { box-sizing: border-box; }
+  /* Always reserve the vertical scrollbar's space, even on a page short
+     enough it doesn't need to scroll — otherwise a page that scrolls
+     (this one) and one just barely short enough not to (e.g. Release
+     Notes) end up with different available widths, and everything
+     centered in the body, nav included, visibly shifts a few pixels
+     between them. */
+  html { overflow-y: scroll; }
   html, body {
     margin: 0;
     padding: 0;
