@@ -102,9 +102,14 @@
   /* Persistent top nav — same structure/links as the homepage's own <nav>,
      so every page keeps the same way back to Features/Pricing/FAQ/Release
      Notes/Support rather than only a bare logo link home. */
+  /* Sticky — stays in view while scrolling, not just present on this
+     page. Same treatment on every page on this site. */
   nav {
     display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 36px;
+    padding: 14px 0; margin-bottom: 22px;
+    position: sticky; top: 0; z-index: 20;
+    background: var(--bg);
+    border-bottom: 1px solid var(--divider);
   }
   .nav-right { display: flex; align-items: center; gap: 20px; }
   .nav-links { display: flex; gap: 22px; }

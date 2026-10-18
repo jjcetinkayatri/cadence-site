@@ -102,9 +102,14 @@
   /* Persistent top nav — same structure/links as every other page on this
      site, so Release Notes is reachable (and keeps its own nav) from
      anywhere. */
+  /* Sticky — stays in view while scrolling, not just present on this
+     page. Same treatment on every page on this site. */
   nav {
     display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 36px;
+    padding: 14px 0; margin-bottom: 22px;
+    position: sticky; top: 0; z-index: 20;
+    background: var(--bg);
+    border-bottom: 1px solid var(--divider);
   }
   .nav-right { display: flex; align-items: center; gap: 20px; }
   .nav-links { display: flex; gap: 22px; }
