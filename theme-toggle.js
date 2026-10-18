@@ -45,4 +45,17 @@
   });
 
   apply(safeGet());
+
+  // Mark whichever nav link points at the CURRENT page (Release Notes,
+  // Support) so there's a visible "you are here" state — the homepage's
+  // own Features/Pricing/FAQ links are same-page anchors, not separate
+  // routes, so none of them get marked here. Path-based, not a hardcoded
+  // per-page class, so it works identically on every page without
+  // needing to remember to set it by hand.
+  var path = location.pathname.replace(/\/$/, '') || '/';
+  document.querySelectorAll('.nav-links a').forEach(function (a) {
+    var href = a.getAttribute('href') || '';
+    var linkPath = href.split('#')[0].replace(/\/$/, '') || '/';
+    if (linkPath !== '/' && linkPath === path) a.classList.add('current');
+  });
 })();
