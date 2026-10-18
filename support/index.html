@@ -139,7 +139,22 @@
   }
   .nav-brand-link { text-decoration: none; }
   .nav-right { display: flex; align-items: center; gap: 20px; }
-  .nav-links { display: flex; gap: 22px; }
+  /* Fixed width (desktop only — overridden back to auto in the mobile
+     media query below, where nav-links wraps and this doesn't apply).
+     Confirmed by a cropped, frame-by-frame recording: on macOS, a link
+     rendering in the --good green vs the default grey measurably
+     changes that glyph's own antialiased width by a couple pixels —
+     more for a long word ("Release Notes") than a short one ("FAQ").
+     Since nav-right (holding nav-links + the toggle) is pinned to nav's
+     right edge, any change in nav-links' own rendered width shifted the
+     whole Features/Pricing/FAQ block — not the word that changed color,
+     everything to its left. A fixed width means nav-links' own box can
+     never grow or shrink, however any individual word's glyphs render,
+     so nothing beside it can be pushed around either. Its natural
+     content width is ~353px; 358px is just enough buffer to absorb the
+     wobble without adding enough extra width to overflow at viewports
+     just above the 560px mobile breakpoint, where the margin is tight. */
+  .nav-links { display: flex; gap: 22px; width: 358px; flex-shrink: 0; }
   .nav-links a { font-size: 13px; font-weight: 600; color: var(--meta); text-decoration: none; white-space: nowrap; }
   .nav-links a:hover { color: var(--text); }
   /* Color only — no font-weight change. Bold text is physically wider,
@@ -161,10 +176,10 @@
   .theme-toggle button:hover { color: var(--text); }
   .theme-toggle button.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
 
-  @media (max-width: 560px) {
+  @media (max-width: 610px) {
     nav { flex-direction: column; align-items: flex-start; gap: 14px; }
     .nav-right { flex-wrap: wrap; gap: 14px; }
-    .nav-links { gap: 16px; flex-wrap: wrap; }
+    .nav-links { gap: 16px; flex-wrap: wrap; width: auto; flex-shrink: 1; }
   }
 
   h1 {
