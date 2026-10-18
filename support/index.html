@@ -94,12 +94,15 @@
     max-width: 1080px;
     padding: 0 20px 64px;
   }
-  /* Flush left with nav's own logo, not independently centered — every
-     page here always had its content start directly under the brand
-     mark; centering it here instead would detach it from nav visually
-     even though nav itself is now wider for width-consistency. */
+  /* Centered on the page, same as this page always looked — main itself
+     used to be this same narrow width and centered as a whole, so nav
+     and content were centered together. nav is wider now (for its own
+     width-consistency across pages), but the actual content keeps the
+     centered position it always had rather than shifting to flush-left
+     under the now-wider nav's logo. */
   .content {
     max-width: 640px;
+    margin: 0 auto;
   }
 
   .brand {
