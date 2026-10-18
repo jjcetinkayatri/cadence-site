@@ -139,7 +139,14 @@
   .nav-links { display: flex; gap: 22px; }
   .nav-links a { font-size: 13px; font-weight: 600; color: var(--meta); text-decoration: none; white-space: nowrap; }
   .nav-links a:hover { color: var(--text); }
-  .nav-links a.current { color: var(--good); font-weight: 700; }
+  /* Color only — no font-weight change. Bold text is physically wider,
+     and since .nav-right is pinned to nav's right edge (space-between
+     on nav), any width change in .nav-links shifts the whole Features/
+     Pricing/FAQ block left or right. A short bold word (FAQ) and a long
+     one (Support) don't add the same extra width, so switching which
+     link is current visibly shifted that block — this is what was
+     reported as nav "moving". Color alone can't affect layout width. */
+  .nav-links a.current { color: var(--good); }
 
   .theme-toggle { display: flex; gap: 2px; background: var(--surface-alt); border: 1px solid var(--divider); border-radius: 999px; padding: 3px; flex: none; }
   .theme-toggle button {
