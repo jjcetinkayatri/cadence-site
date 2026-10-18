@@ -58,4 +58,32 @@
     var linkPath = href.split('#')[0].replace(/\/$/, '') || '/';
     if (linkPath !== '/' && linkPath === path) a.classList.add('current');
   });
+
+  // Same "you are here" treatment for the homepage's own Features/Pricing/
+  // FAQ links — those aren't separate pages, so the path check above never
+  // touches them. Whichever section is scrolled into view gets .current
+  // instead, the same way Release Notes/Support get it from the path.
+  var sections = ['features', 'pricing', 'faq'].map(function (id) {
+    return document.getElementById(id);
+  }).filter(Boolean);
+  if (sections.length && 'IntersectionObserver' in window) {
+    var sectionLinks = {};
+    document.querySelectorAll('.nav-links a').forEach(function (a) {
+      var hash = (a.getAttribute('href') || '').split('#')[1];
+      if (hash) sectionLinks[hash] = a;
+    });
+    var observer = new IntersectionObserver(function (entries) {
+      var visible = entries.filter(function (entry) { return entry.isIntersecting; });
+      // Above Features (still in the hero) or past FAQ (in the footer):
+      // nothing should read as "current" — clear rather than leave the
+      // last section stuck active.
+      var activeId = visible.length
+        ? visible.sort(function (a, b) { return a.boundingClientRect.top - b.boundingClientRect.top; })[0].target.id
+        : null;
+      Object.keys(sectionLinks).forEach(function (id) {
+        sectionLinks[id].classList.toggle('current', id === activeId);
+      });
+    }, { rootMargin: '-100px 0px -60% 0px', threshold: 0 });
+    sections.forEach(function (section) { observer.observe(section); });
+  }
 })();

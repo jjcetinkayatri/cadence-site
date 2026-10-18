@@ -94,9 +94,12 @@
     max-width: 1080px;
     padding: 0 20px 64px;
   }
+  /* Flush left with nav's own logo, not independently centered — every
+     page here always had its content start directly under the brand
+     mark; centering it here instead would detach it from nav visually
+     even though nav itself is now wider for width-consistency. */
   .content {
     max-width: 640px;
-    margin: 0 auto;
   }
 
   .brand {
