@@ -78,10 +78,22 @@
     justify-content: center;
     min-height: 100vh;
   }
+  /* 1080px to match every other page — nav lives inside main, so main's
+     own max-width is what nav's visible width tracks; .content below
+     narrows the actual readable text back down. No top padding: nav
+     must sit flush with the very top of the page at rest, exactly where
+     it ends up once stuck (position: sticky, top: 0) after scrolling —
+     padding here would only show before the first scroll and vanish the
+     moment nav sticks, making nav look shorter on a page you land on
+     already scrolled (e.g. via an anchor link) than one you load at rest. */
   main {
     width: 100%;
+    max-width: 1080px;
+    padding: 0 20px 64px;
+  }
+  .content {
     max-width: 680px;
-    padding: 48px 20px 64px;
+    margin: 0 auto;
   }
 
   .brand {
@@ -104,23 +116,12 @@
      Notes/Support rather than only a bare logo link home. */
   /* Sticky — stays in view while scrolling, not just present on this
      page. Same treatment on every page on this site. */
-  /* nav itself is full-bleed (breaks out of main's own max-width via
-     negative margins) and only .nav-inner is centered, at a max-width
-     that's the same constant on every page — see index.html's own
-     comment on this same rule for why. */
   nav {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
-    margin-bottom: 22px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 0; margin-bottom: 22px;
     position: sticky; top: 0; z-index: 20;
     background: var(--bg);
     border-bottom: 1px solid var(--divider);
-  }
-  .nav-inner {
-    display: flex; align-items: center; justify-content: space-between;
-    max-width: 1080px; margin: 0 auto;
-    padding: 14px 20px;
   }
   .nav-right { display: flex; align-items: center; gap: 20px; }
   .nav-links { display: flex; gap: 22px; }
@@ -139,7 +140,7 @@
   .theme-toggle button.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
 
   @media (max-width: 560px) {
-    .nav-inner { flex-direction: column; align-items: flex-start; gap: 14px; }
+    nav { flex-direction: column; align-items: flex-start; gap: 14px; }
     .nav-right { flex-wrap: wrap; gap: 14px; }
     .nav-links { gap: 16px; flex-wrap: wrap; }
   }
@@ -206,37 +207,36 @@
 <body>
   <main>
     <nav>
-      <div class="nav-inner">
-        <a class="brand" href="/" aria-label="Cadence home">
-          <svg viewBox="0 0 32 32" role="img" aria-label="Cadence">
-            <line x1="4.5" y1="27" x2="9.5" y2="13" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.55"></line>
-            <line x1="13.5" y1="23" x2="18.5" y2="9" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.5"></line>
-            <line x1="22.5" y1="19" x2="27.5" y2="5" stroke="var(--good)" stroke-width="5" stroke-linecap="round"></line>
-          </svg>
-          <span class="brand-word">cadence</span>
-        </a>
-        <div class="nav-right">
-          <div class="nav-links">
-            <a href="/#features">Features</a>
-            <a href="/#pricing">Pricing</a>
-            <a href="/#faq">FAQ</a>
-            <a href="/release-notes">Release Notes</a>
-            <a href="/support">Support</a>
-          </div>
-          <div class="theme-toggle" role="group" aria-label="Appearance">
-            <button type="button" data-theme-choice="system" aria-label="System appearance" aria-pressed="false">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"></circle><path d="M12 3a9 9 0 000 18z" fill="currentColor"></path></svg>
-            </button>
-            <button type="button" data-theme-choice="light" aria-label="Light appearance" aria-pressed="false">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
-            </button>
-            <button type="button" data-theme-choice="dark" aria-label="Dark appearance" aria-pressed="false">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg>
-            </button>
-          </div>
+      <a class="brand" href="/" aria-label="Cadence home">
+        <svg viewBox="0 0 32 32" role="img" aria-label="Cadence">
+          <line x1="4.5" y1="27" x2="9.5" y2="13" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.55"></line>
+          <line x1="13.5" y1="23" x2="18.5" y2="9" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.5"></line>
+          <line x1="22.5" y1="19" x2="27.5" y2="5" stroke="var(--good)" stroke-width="5" stroke-linecap="round"></line>
+        </svg>
+        <span class="brand-word">cadence</span>
+      </a>
+      <div class="nav-right">
+        <div class="nav-links">
+          <a href="/#features">Features</a>
+          <a href="/#pricing">Pricing</a>
+          <a href="/#faq">FAQ</a>
+          <a href="/release-notes">Release Notes</a>
+          <a href="/support">Support</a>
+        </div>
+        <div class="theme-toggle" role="group" aria-label="Appearance">
+          <button type="button" data-theme-choice="system" aria-label="System appearance" aria-pressed="false">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"></circle><path d="M12 3a9 9 0 000 18z" fill="currentColor"></path></svg>
+          </button>
+          <button type="button" data-theme-choice="light" aria-label="Light appearance" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+          </button>
+          <button type="button" data-theme-choice="dark" aria-label="Dark appearance" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg>
+          </button>
         </div>
       </div>
     </nav>
+    <div class="content">
 
     <h1>Privacy Policy</h1>
     <p class="lede">Cadence predicts how a race's distance and climbing will actually feel for your own fitness, and tracks whether that prediction held up once you've raced it. This policy covers exactly what the app and its backend collect to do that, and nothing else.</p>
@@ -297,6 +297,7 @@
     <footer>
       Cadence Sports Race Prediction for iOS. Developed and operated by an individual based in British Columbia, Canada. See also our <a href="/terms">Terms &amp; Conditions</a> and <a href="/">Support</a> page.
     </footer>
+    </div>
   </main>
 <script src="/theme-toggle.js"></script>
 </body>

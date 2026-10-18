@@ -78,7 +78,15 @@
     -webkit-font-smoothing: antialiased;
   }
   body { display: flex; justify-content: center; }
-  main { width: 100%; max-width: 1080px; padding: 28px 20px 64px; }
+  /* No top padding: nav must sit flush against the very top of the page
+     at rest, exactly where it ends up once stuck (position: sticky,
+     top: 0) after scrolling. Padding here would only show above nav
+     before the first scroll and vanish the moment nav sticks — on an
+     anchor link (e.g. /#faq) the page loads already scrolled past that
+     point, so nav looks instantly shorter/different than a page you
+     load at rest. Removing it makes nav's own footprint identical
+     whichever way you arrive. */
+  main { width: 100%; max-width: 1080px; padding: 0 20px 64px; }
 
   a { color: inherit; }
 
@@ -98,26 +106,12 @@
      hero: padding would be part of nav's own sticky box and create one
      huge sticky block instead of a slim bar; margin stays in normal flow
      and scrolls away as it always did. */
-  /* nav itself is full-bleed (breaks out of main's own max-width via
-     negative margins) and only .nav-inner is centered, at a max-width
-     that's the same constant on every page. Without this, nav's visible
-     width — and its border-bottom's length — tracked whatever max-width
-     this page's main happened to use (1080px here, 640-680px on the
-     content pages), which is what actually made the nav bar render at a
-     different width depending on which page you were on. */
   nav {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
-    margin-bottom: 44px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 0; margin-bottom: 44px;
     position: sticky; top: 0; z-index: 20;
     background: var(--bg);
     border-bottom: 1px solid var(--divider);
-  }
-  .nav-inner {
-    display: flex; align-items: center; justify-content: space-between;
-    max-width: 1080px; margin: 0 auto;
-    padding: 14px 20px;
   }
   .nav-brand-link { text-decoration: none; }
   .nav-right { display: flex; align-items: center; gap: 20px; }
@@ -141,7 +135,7 @@
   .theme-toggle button.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
 
   @media (max-width: 560px) {
-    .nav-inner { flex-direction: column; align-items: flex-start; gap: 14px; }
+    nav { flex-direction: column; align-items: flex-start; gap: 14px; }
     .nav-right { flex-wrap: wrap; gap: 14px; }
     .nav-links { gap: 16px; flex-wrap: wrap; }
   }
@@ -280,36 +274,34 @@
 <body>
 <main>
   <nav>
-    <div class="nav-inner">
-      <a class="nav-brand-link" href="/">
-        <div class="brand">
-          <svg viewBox="0 0 32 32" role="img" aria-label="Cadence">
-            <line x1="4.5" y1="27" x2="9.5" y2="13" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.55"></line>
-            <line x1="13.5" y1="23" x2="18.5" y2="9" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.5"></line>
-            <line x1="22.5" y1="19" x2="27.5" y2="5" stroke="var(--good)" stroke-width="5" stroke-linecap="round"></line>
-          </svg>
-          <span class="brand-word">cadence</span>
-        </div>
-      </a>
-      <div class="nav-right">
-        <div class="nav-links">
-          <a href="/#features">Features</a>
-          <a href="/#pricing">Pricing</a>
-          <a href="/#faq">FAQ</a>
-          <a href="/release-notes">Release Notes</a>
-          <a href="/support">Support</a>
-        </div>
-        <div class="theme-toggle" role="group" aria-label="Appearance">
-          <button type="button" data-theme-choice="system" aria-label="System appearance" aria-pressed="false">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"></circle><path d="M12 3a9 9 0 000 18z" fill="currentColor"></path></svg>
-          </button>
-          <button type="button" data-theme-choice="light" aria-label="Light appearance" aria-pressed="false">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
-          </button>
-          <button type="button" data-theme-choice="dark" aria-label="Dark appearance" aria-pressed="false">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg>
-          </button>
-        </div>
+    <a class="nav-brand-link" href="/">
+      <div class="brand">
+        <svg viewBox="0 0 32 32" role="img" aria-label="Cadence">
+          <line x1="4.5" y1="27" x2="9.5" y2="13" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.55"></line>
+          <line x1="13.5" y1="23" x2="18.5" y2="9" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.5"></line>
+          <line x1="22.5" y1="19" x2="27.5" y2="5" stroke="var(--good)" stroke-width="5" stroke-linecap="round"></line>
+        </svg>
+        <span class="brand-word">cadence</span>
+      </div>
+    </a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="/#features">Features</a>
+        <a href="/#pricing">Pricing</a>
+        <a href="/#faq">FAQ</a>
+        <a href="/release-notes">Release Notes</a>
+        <a href="/support">Support</a>
+      </div>
+      <div class="theme-toggle" role="group" aria-label="Appearance">
+        <button type="button" data-theme-choice="system" aria-label="System appearance" aria-pressed="false">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"></circle><path d="M12 3a9 9 0 000 18z" fill="currentColor"></path></svg>
+        </button>
+        <button type="button" data-theme-choice="light" aria-label="Light appearance" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+        </button>
+        <button type="button" data-theme-choice="dark" aria-label="Dark appearance" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg>
+        </button>
       </div>
     </div>
   </nav>
