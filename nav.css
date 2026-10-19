@@ -51,11 +51,15 @@ nav {
    block, not just the word that changed color. A fixed width means
    nav-links' own box can't grow or shrink no matter how any word
    renders. Natural content width with all six links (Features, Pricing,
-   FAQ, How It Works, Release Notes, Support) is ~458px, measured via
-   Playwright; 465px is just enough buffer to absorb the wobble without
-   overflowing just above the mobile breakpoint, where the margin is
-   tight. */
-.nav-links { display: flex; gap: 22px; width: 465px; flex-shrink: 0; }
+   FAQ, How It Works, Release Notes, Support) measures ~458px in this
+   sandbox's Linux Chromium — but a too-tight buffer on that exact
+   measurement (465px) shipped broken: real browsers (confirmed via a
+   user screenshot) render the system-font stack wider than Linux's
+   substitute font, overflowing the box and visually colliding "Release
+   Notes"/"How It Works" into the theme toggle. 540px leaves real slack
+   above any single-environment measurement instead of chasing another
+   exact number this sandbox can't verify cross-platform. */
+.nav-links { display: flex; gap: 22px; width: 540px; flex-shrink: 0; }
 /* font-family pinned explicitly, not inherited from each page's own body
    font: the homepage loads "Inter" as a webfont while every other page
    uses the plain system-font stack, and since these links sit left-to-
@@ -97,7 +101,7 @@ footer a { color: var(--meta); text-decoration: none; }
 footer a:hover { color: var(--text); }
 .foot-links { display: flex; gap: 18px; flex-wrap: wrap; }
 
-@media (max-width: 740px) {
+@media (max-width: 900px) {
   nav { flex-direction: column; align-items: flex-start; gap: 14px; }
   .nav-right { flex-wrap: wrap; gap: 14px; }
   .nav-links { gap: 16px; flex-wrap: wrap; width: auto; flex-shrink: 1; }
