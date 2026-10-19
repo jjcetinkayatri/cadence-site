@@ -230,12 +230,13 @@
   .legal a { color: var(--text); }
 
   footer {
-    margin-top: 36px;
-    font-size: 12.5px;
-    color: var(--meta);
-    line-height: 1.6;
+    margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--divider);
+    display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between;
+    font-size: 12.5px; color: var(--meta); line-height: 1.6;
   }
-  footer a { color: var(--meta); }
+  footer a { color: var(--meta); text-decoration: none; }
+  footer a:hover { color: var(--text); }
+  .foot-links { display: flex; gap: 18px; flex-wrap: wrap; }
 </style>
 </head>
 <body>
@@ -329,7 +330,11 @@
     </div>
 
     <footer>
-      Cadence Sports Race Prediction for iOS. Developed and operated by an individual based in British Columbia, Canada. See also our <a href="/terms">Terms &amp; Conditions</a> and <a href="/">Support</a> page.
+      <span>&copy; 2026 Cadence Sports Race Prediction. Developed and operated by an individual based in British Columbia, Canada.</span>
+      <div class="foot-links">
+        <a href="/support">Support</a>
+        <a href="/terms">Terms &amp; Conditions</a>
+      </div>
     </footer>
     </div>
   </main>
