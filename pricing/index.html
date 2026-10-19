@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- Cross-document View Transitions — see index.html's own comment on
+     this same tag for why. -->
+<meta name="view-transition" content="same-origin">
+<title>Cadence Pricing</title>
+<script>
+  // Must run before first paint — see theme-toggle.js's own comment.
+  (function () {
+    try {
+      var t = localStorage.getItem('cadence-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500&display=swap" rel="stylesheet">
+<style>
+  /* Tokens transcribed exactly from ios/Cadence/Theme.swift, same as every
+     other page on this site — one shared palette. */
+  :root {
+    --bg: #FAFAFA;
+    --surface: #FFFFFF;
+    --surface-alt: #F0F0F0;
+    --divider: #E2E2E2;
+    --text: #141414;
+    --body-text: #3A3A3A;
+    --meta: #6E6E6E;
+    --label: #4A4A4A;
+    --good: #2F6A48;
+    --accent: #141414;
+    --on-accent: #FFFFFF;
+    --shadow: 0 1px 2px rgba(20, 20, 20, 0.04), 0 8px 24px rgba(20, 20, 20, 0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0C0C0C;
+      --surface: #1A1A1A;
+      --surface-alt: #131313;
+      --divider: #2E2E2E;
+      --text: #F5F5F5;
+      --body-text: #D0D0D0;
+      --meta: #8A8A8A;
+      --label: #B5B5B5;
+      --good: #5FBF8F;
+      --accent: #F5F5F5;
+      --on-accent: #000000;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0C0C0C;
+    --surface: #1A1A1A;
+    --surface-alt: #131313;
+    --divider: #2E2E2E;
+    --text: #F5F5F5;
+    --body-text: #D0D0D0;
+    --meta: #8A8A8A;
+    --label: #B5B5B5;
+    --good: #5FBF8F;
+    --accent: #F5F5F5;
+    --on-accent: #000000;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+  /* Always reserve the vertical scrollbar's space, even on a page short
+     enough it doesn't need to scroll — otherwise this page and one that
+     does scroll end up with different available widths, and everything
+     centered in the body, nav included, visibly shifts a few pixels
+     between them. */
+  html { overflow-y: scroll; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+  }
+  /* 1080px to match every other page — nav lives inside main, so main's
+     own max-width is what nav's visible width tracks. No top padding: nav
+     must sit flush with the very top of the page at rest. */
+  main {
+    width: 100%;
+    max-width: 1080px;
+    padding: 0 20px 64px;
+  }
+  .content {
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+
+  /* Nav/brand/footer styling lives in the shared /nav.css (linked in
+     <head>), not here — see that file's own header comment for why. */
+
+  h1 {
+    font-size: 28px;
+    line-height: 1.25;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+    text-align: center;
+  }
+  .lede {
+    color: var(--body-text);
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 0 auto 32px;
+    max-width: 56ch;
+    text-align: center;
+  }
+
+  /* Pricing table — same rules as the homepage's own #pricing section. */
+  .price-table {
+    background: var(--surface); border: 1px solid var(--divider); border-radius: 18px;
+    box-shadow: var(--shadow); overflow: hidden; max-width: 640px; margin: 0 auto 64px;
+  }
+  .price-head { display: grid; grid-template-columns: 1.6fr 1fr 1fr; padding: 18px 22px 14px; border-bottom: 1px solid var(--divider); }
+  .price-head .plan-col { text-align: center; }
+  .price-head .plan-col .pc-name { font-size: 15px; font-weight: 700; }
+  .price-head .plan-col .pc-price { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; color: var(--meta); margin-top: 2px; }
+  .price-head .plan-col.season .pc-price { color: var(--text); }
+  .price-row { display: grid; grid-template-columns: 1.6fr 1fr 1fr; align-items: center; padding: 14px 22px; border-bottom: 1px solid var(--divider); font-size: 13.5px; }
+  .price-row:last-child { border-bottom: none; }
+  .price-row .pr-feature { color: var(--text); }
+  .price-row .pr-val { text-align: center; color: var(--body-text); font-size: 13px; }
+  .price-row .pr-val.check { color: var(--good); font-weight: 700; }
+  .price-foot { padding: 16px 22px; font-size: 12px; color: var(--meta); text-align: center; border-top: 1px solid var(--divider); }
+</style>
+<link rel="stylesheet" href="/nav.css">
+</head>
+<body>
+  <main>
+    <nav>
+      <a class="nav-brand-link" href="/">
+        <div class="brand">
+          <!-- Three round-capped diagonal strides, the last one lit — per
+               Theme.swift's CadenceMark construction spec (32-unit grid). -->
+          <svg viewBox="0 0 32 32" role="img" aria-label="Cadence">
+            <line x1="4.5" y1="27" x2="9.5" y2="13" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.55"></line>
+            <line x1="13.5" y1="23" x2="18.5" y2="9" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.5"></line>
+            <line x1="22.5" y1="19" x2="27.5" y2="5" stroke="var(--good)" stroke-width="5" stroke-linecap="round"></line>
+          </svg>
+          <span class="brand-word">cadence</span>
+        </div>
+      </a>
+      <div class="nav-right">
+        <div class="nav-links">
+          <a href="/features">Features</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/faq">FAQ</a>
+          <a href="/release-notes">Release Notes</a>
+          <a href="/support">Support</a>
+        </div>
+        <div class="theme-toggle" role="group" aria-label="Appearance">
+          <button type="button" data-theme-choice="system" aria-label="System appearance" aria-pressed="false">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"></circle><path d="M12 3a9 9 0 000 18z" fill="currentColor"></path></svg>
+          </button>
+          <button type="button" data-theme-choice="light" aria-label="Light appearance" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+          </button>
+          <button type="button" data-theme-choice="dark" aria-label="Dark appearance" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <div class="content">
+
+    <h1>Simple pricing, same accuracy</h1>
+    <p class="lede">Confidence tier, limiter, and predicted range are identical on both plans. Accuracy is never a paid feature.</p>
+
+    <div class="price-table">
+      <div class="price-head">
+        <span></span>
+        <span class="plan-col"><div class="pc-name">Free</div><div class="pc-price">$0</div></span>
+        <span class="plan-col season"><div class="pc-name">Season</div><div class="pc-price">CA$8.99/mo</div></span>
+      </div>
+      <div class="price-row"><span class="pr-feature">Fit reports</span><span class="pr-val">Unlimited</span><span class="pr-val">Unlimited</span></div>
+      <div class="price-row"><span class="pr-feature">Races tracked at once</span><span class="pr-val">2</span><span class="pr-val">Unlimited</span></div>
+      <div class="price-row"><span class="pr-feature">New-fit alerts</span><span class="pr-val">5 / 30 days</span><span class="pr-val">Unlimited</span></div>
+      <div class="price-row"><span class="pr-feature">Season planning + taper guidance</span><span class="pr-val">&ndash;</span><span class="pr-val check">&#10003;</span></div>
+      <div class="price-row"><span class="pr-feature">Strava auto-sync</span><span class="pr-val">&ndash;</span><span class="pr-val check">&#10003;</span></div>
+      <div class="price-foot">Billed monthly through your Apple ID. Cancel anytime in Settings.</div>
+    </div>
+
+    </div>
+    <footer>
+      <span>&copy; 2026 Cadence Sports Race Prediction.</span>
+      <div class="foot-links">
+        <a href="/support">Support</a>
+        <a href="/terms">Terms &amp; Conditions</a>
+        <a href="/privacy">Privacy Policy</a>
+      </div>
+    </footer>
+  </main>
+<script src="/theme-toggle.js"></script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- Cross-document View Transitions — see index.html's own comment on
+     this same tag for why. -->
+<meta name="view-transition" content="same-origin">
+<title>Cadence Features</title>
+<script>
+  // Must run before first paint — see theme-toggle.js's own comment.
+  (function () {
+    try {
+      var t = localStorage.getItem('cadence-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500&display=swap" rel="stylesheet">
+<style>
+  /* Tokens transcribed exactly from ios/Cadence/Theme.swift, same as every
+     other page on this site — one shared palette. */
+  :root {
+    --bg: #FAFAFA;
+    --surface: #FFFFFF;
+    --surface-alt: #F0F0F0;
+    --divider: #E2E2E2;
+    --text: #141414;
+    --body-text: #3A3A3A;
+    --meta: #6E6E6E;
+    --label: #4A4A4A;
+    --good: #2F6A48;
+    --accent: #141414;
+    --on-accent: #FFFFFF;
+    --shadow: 0 1px 2px rgba(20, 20, 20, 0.04), 0 8px 24px rgba(20, 20, 20, 0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0C0C0C;
+      --surface: #1A1A1A;
+      --surface-alt: #131313;
+      --divider: #2E2E2E;
+      --text: #F5F5F5;
+      --body-text: #D0D0D0;
+      --meta: #8A8A8A;
+      --label: #B5B5B5;
+      --good: #5FBF8F;
+      --accent: #F5F5F5;
+      --on-accent: #000000;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0C0C0C;
+    --surface: #1A1A1A;
+    --surface-alt: #131313;
+    --divider: #2E2E2E;
+    --text: #F5F5F5;
+    --body-text: #D0D0D0;
+    --meta: #8A8A8A;
+    --label: #B5B5B5;
+    --good: #5FBF8F;
+    --accent: #F5F5F5;
+    --on-accent: #000000;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+  /* Always reserve the vertical scrollbar's space, even on a page short
+     enough it doesn't need to scroll — otherwise this page and one that
+     does scroll end up with different available widths, and everything
+     centered in the body, nav included, visibly shifts a few pixels
+     between them. */
+  html { overflow-y: scroll; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+  }
+  /* 1080px to match every other page — nav lives inside main, so main's
+     own max-width is what nav's visible width tracks. No top padding: nav
+     must sit flush with the very top of the page at rest. */
+  main {
+    width: 100%;
+    max-width: 1080px;
+    padding: 0 20px 64px;
+  }
+  .content {
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+
+  /* Nav/brand/footer styling lives in the shared /nav.css (linked in
+     <head>), not here — see that file's own header comment for why. */
+
+  h1 {
+    font-size: 28px;
+    line-height: 1.25;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .lede {
+    color: var(--body-text);
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 0 0 32px;
+  }
+
+  /* Features grid — same rules as the homepage's own #features section. */
+  .features { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 8px 0 64px; }
+  @media (max-width: 900px) { .features { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .features { grid-template-columns: 1fr; } }
+  .feature-card {
+    background: var(--surface); border: 1px solid var(--divider); border-radius: 16px;
+    padding: 20px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .feature-icon {
+    width: 34px; height: 34px; border-radius: 9px; background: var(--surface-alt);
+    display: flex; align-items: center; justify-content: center; color: var(--good);
+  }
+  .feature-card h3 { font-size: 14.5px; font-weight: 600; margin: 0; }
+  .feature-card p { font-size: 13px; line-height: 1.55; color: var(--body-text); margin: 0; }
+</style>
+<link rel="stylesheet" href="/nav.css">
+</head>
+<body>
+  <main>
+    <nav>
+      <a class="nav-brand-link" href="/">
+        <div class="brand">
+          <!-- Three round-capped diagonal strides, the last one lit — per
+               Theme.swift's CadenceMark construction spec (32-unit grid). -->
+          <svg viewBox="0 0 32 32" role="img" aria-label="Cadence">
+            <line x1="4.5" y1="27" x2="9.5" y2="13" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.55"></line>
+            <line x1="13.5" y1="23" x2="18.5" y2="9" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.5"></line>
+            <line x1="22.5" y1="19" x2="27.5" y2="5" stroke="var(--good)" stroke-width="5" stroke-linecap="round"></line>
+          </svg>
+          <span class="brand-word">cadence</span>
+        </div>
+      </a>
+      <div class="nav-right">
+        <div class="nav-links">
+          <a href="/features">Features</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/faq">FAQ</a>
+          <a href="/release-notes">Release Notes</a>
+          <a href="/support">Support</a>
+        </div>
+        <div class="theme-toggle" role="group" aria-label="Appearance">
+          <button type="button" data-theme-choice="system" aria-label="System appearance" aria-pressed="false">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"></circle><path d="M12 3a9 9 0 000 18z" fill="currentColor"></path></svg>
+          </button>
+          <button type="button" data-theme-choice="light" aria-label="Light appearance" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+          </button>
+          <button type="button" data-theme-choice="dark" aria-label="Dark appearance" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <div class="content">
+
+    <h1>Built on your real numbers</h1>
+    <p class="lede">Every prediction traces back to a physiological model and your own training history, never a flat pace chart.</p>
+
+    <div class="features">
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 17l5-6 4 4 9-11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Physiology-based prediction</h3>
+        <p>A real baseline model, not a flat distance multiplier, corrected against your own history and course elevation.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 12h4l2-7 4 14 2-7h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Strava auto-sync</h3>
+        <p>Connect once and your power curve, long runs, and rides stay current automatically, with no manual re-entry.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 10h18M7 3v4M17 3v4M5 7h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Season planning</h3>
+        <p>See your whole season at once, with deterministic taper guidance heading into your peak race.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3zM19 11a7 7 0 01-14 0M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Ask it anything, out loud</h3>
+        <p>Voice or text: add a race, drop one, pull up a fit report. Cadence acts on it directly.</p>
+      </div>
+    </div>
+
+    </div>
+    <footer>
+      <span>&copy; 2026 Cadence Sports Race Prediction.</span>
+      <div class="foot-links">
+        <a href="/support">Support</a>
+        <a href="/terms">Terms &amp; Conditions</a>
+        <a href="/privacy">Privacy Policy</a>
+      </div>
+    </footer>
+  </main>
+<script src="/theme-toggle.js"></script>
+</body>
+</html>
