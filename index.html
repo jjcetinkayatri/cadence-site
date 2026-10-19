@@ -3,6 +3,16 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- Cross-document View Transitions (Chrome/Edge; no-op elsewhere): makes
+     navigating between pages fade rather than hard-cut, and — combined
+     with nav's own view-transition-name in nav.css — lets the browser
+     treat nav as one continuous element across the page boundary instead
+     of tearing it down and rebuilding it. Features/Pricing/FAQ already
+     feel continuous because they're scroll positions on one loaded page;
+     this is the equivalent for Release Notes/Support/Privacy/Terms,
+     which are genuinely separate documents and would otherwise always
+     have a harder cut no matter how the scroll itself is handled. -->
+<meta name="view-transition" content="same-origin">
 <title>Cadence Sports Race Prediction</title>
 <script>
   // Must run before first paint so an explicit Light/Dark choice (saved by

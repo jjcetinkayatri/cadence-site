@@ -32,6 +32,12 @@ nav {
   position: sticky; top: 0; z-index: 20;
   background: var(--bg);
   border-bottom: 1px solid var(--divider);
+  /* Same name on every page (paired with the <meta name="view-transition">
+     tag in each page's own <head>) tells the browser nav is one
+     continuous element across a page navigation, not old-page-content
+     replaced by new-page-content — so a Support -> FAQ click can stop
+     looking like the nav itself got swapped out and back in. */
+  view-transition-name: site-nav;
 }
 .nav-brand-link { text-decoration: none; }
 .nav-right { display: flex; align-items: center; gap: 20px; }
