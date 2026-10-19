@@ -54,7 +54,17 @@ nav {
    buffer to absorb the wobble without overflowing just above the
    mobile breakpoint, where the margin is tight. */
 .nav-links { display: flex; gap: 22px; width: 358px; flex-shrink: 0; }
-.nav-links a { font-size: 13px; font-weight: 600; color: var(--meta); text-decoration: none; white-space: nowrap; }
+/* font-family pinned explicitly, not inherited from each page's own body
+   font: the homepage loads "Inter" as a webfont while every other page
+   uses the plain system-font stack, and since these links sit left-to-
+   right in a fixed-gap flex row, a different typeface renders each word
+   at a different width — shifting every link after the first one. That
+   mismatch was the real cause of nav "shifting" specifically between the
+   homepage and any other page (never between two non-homepage pages,
+   which already shared the same font). Pinning it here means nav text
+   renders identically everywhere regardless of what font a page's own
+   body text uses. */
+.nav-links a { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 600; color: var(--meta); text-decoration: none; white-space: nowrap; }
 .nav-links a:hover { color: var(--text); }
 /* Color only — never font-weight. Bold text is physically wider, and a
    width change in .nav-links shifts the whole block beside it (see
@@ -78,6 +88,7 @@ nav {
 footer {
   margin-top: 24px; padding-top: 28px; border-top: 1px solid var(--divider);
   display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   font-size: 12.5px; color: var(--meta);
 }
 footer a { color: var(--meta); text-decoration: none; }
