@@ -100,10 +100,18 @@
     document.body.appendChild(badge);
     function report() {
       var nav = document.querySelector('nav');
+      var navLinks = document.querySelector('.nav-links');
+      var features = document.querySelector('.nav-links a[href$="features"]') || document.querySelector('.nav-links a');
       if (!nav) return;
       var r = nav.getBoundingClientRect();
+      var lr = navLinks ? navLinks.getBoundingClientRect() : null;
+      var fr = features ? features.getBoundingClientRect() : null;
+      var current = document.querySelector('.nav-links a.current');
       badge.textContent =
         'nav left=' + Math.round(r.left) + ' width=' + Math.round(r.width) + ' top=' + Math.round(r.top) + '\n' +
+        (lr ? ('links left=' + Math.round(lr.left) + ' width=' + Math.round(lr.width) + '\n') : '') +
+        (fr ? ('1st-link left=' + Math.round(fr.left) + '\n') : '') +
+        'current=' + (current ? current.textContent.trim() : 'none') + '\n' +
         'win=' + window.innerWidth + 'x' + window.innerHeight +
         ' docH=' + document.documentElement.scrollHeight +
         ' scrollY=' + Math.round(window.scrollY);
