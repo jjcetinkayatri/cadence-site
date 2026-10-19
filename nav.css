@@ -133,6 +133,13 @@ footer a:hover { color: var(--text); }
     border-bottom: 1px solid var(--divider); box-shadow: var(--shadow);
   }
   nav.open .nav-links { display: flex; }
+  /* The bar only spans the page's content width, so while the backdrop is
+     up its 20px side margins would show grey beside the logo and button.
+     Paint the bar's background out to the screen edges while open. */
+  nav.open::before {
+    content: ""; position: absolute; top: 0; bottom: 0; left: -20px; right: -20px;
+    background: var(--bg); z-index: -1;
+  }
   .nav-links a {
     display: flex; align-items: center; justify-content: space-between;
     min-height: 48px; font-size: 15px; color: var(--text);
