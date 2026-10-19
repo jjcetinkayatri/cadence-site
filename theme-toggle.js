@@ -87,6 +87,21 @@
     sections.forEach(function (section) { observer.observe(section); });
   }
 
+  // Other half of the <head> script: a hash in the URL on arrival here
+  // (clicking /#faq etc. from another page) was stripped before the
+  // browser could act on it, so this page loaded at rest instead of
+  // jumping straight to the target. Scroll to it ourselves, the same
+  // smooth way clicking that link from this page already does, then put
+  // the hash back so the URL still reflects where you are.
+  if (window.__pendingAnchor) {
+    var pendingTarget = document.querySelector(window.__pendingAnchor);
+    if (pendingTarget) {
+      pendingTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    history.replaceState(null, '', window.__pendingAnchor);
+    delete window.__pendingAnchor;
+  }
+
   // TEMPORARY diagnostic badge — not a feature, just a way to get exact
   // numbers instead of guessing from a screen recording. Shows nav's live
   // position/width so a real difference between pages shows up as a

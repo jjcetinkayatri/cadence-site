@@ -17,6 +17,25 @@
     } catch (e) {}
   })();
 </script>
+<script>
+  // Landing here with a #features/#pricing/#faq hash (clicking that link
+  // from Support/Release Notes/Privacy/Terms) is a full page load, and the
+  // browser jumps straight to the target instantly, before first paint —
+  // no animation, unlike clicking the same link from this page itself,
+  // which just smooth-scrolls. That instant teleport is what got reported
+  // as the nav "shifting": arriving already scrolled, nav already stuck,
+  // vs. the smooth, visibly continuous scroll every other case gets. Strip
+  // the hash immediately (before the browser acts on it) and re-apply it
+  // with our own smooth scroll once the target exists — see theme-toggle.js
+  // for the other half of this. Must run before the browser processes the
+  // fragment, so this has to be synchronous and in <head>.
+  (function () {
+    if (location.hash) {
+      window.__pendingAnchor = location.hash;
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
