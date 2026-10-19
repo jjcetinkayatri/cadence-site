@@ -33,6 +33,9 @@
     --on-accent: #FFFFFF;
     --danger: #B3422E;
     --shadow: 0 1px 2px rgba(20, 20, 20, 0.04), 0 8px 24px rgba(20, 20, 20, 0.06);
+    /* Read by the shared /nav.css: the gap between nav and this page's
+       plain <h1> is smaller than the homepage's own wide hero needs. */
+    --nav-gap-after: 22px;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -111,76 +114,8 @@
     margin: 0 auto;
   }
 
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-  }
-  .brand svg { width: 29px; height: 29px; flex-shrink: 0; }
-  .brand-word {
-    font-family: "Sora", -apple-system, sans-serif;
-    font-weight: 500;
-    font-size: 19px;
-    letter-spacing: -0.035em;
-    color: var(--text);
-  }
-
-  /* Persistent top nav — same structure/links as the homepage's own <nav>,
-     so every page keeps the same way back to Features/Pricing/FAQ/Release
-     Notes/Support rather than only a bare logo link home. */
-  /* Sticky — stays in view while scrolling, not just present on this
-     page. Same treatment on every page on this site. */
-  nav {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 0; margin-bottom: 22px;
-    position: sticky; top: 0; z-index: 20;
-    background: var(--bg);
-    border-bottom: 1px solid var(--divider);
-  }
-  .nav-brand-link { text-decoration: none; }
-  .nav-right { display: flex; align-items: center; gap: 20px; }
-  /* Fixed width (desktop only — overridden back to auto in the mobile
-     media query below, where nav-links wraps and this doesn't apply).
-     Confirmed by a cropped, frame-by-frame recording: on macOS, a link
-     rendering in the --good green vs the default grey measurably
-     changes that glyph's own antialiased width by a couple pixels —
-     more for a long word ("Release Notes") than a short one ("FAQ").
-     Since nav-right (holding nav-links + the toggle) is pinned to nav's
-     right edge, any change in nav-links' own rendered width shifted the
-     whole Features/Pricing/FAQ block — not the word that changed color,
-     everything to its left. A fixed width means nav-links' own box can
-     never grow or shrink, however any individual word's glyphs render,
-     so nothing beside it can be pushed around either. Its natural
-     content width is ~353px; 358px is just enough buffer to absorb the
-     wobble without adding enough extra width to overflow at viewports
-     just above the 560px mobile breakpoint, where the margin is tight. */
-  .nav-links { display: flex; gap: 22px; width: 358px; flex-shrink: 0; }
-  .nav-links a { font-size: 13px; font-weight: 600; color: var(--meta); text-decoration: none; white-space: nowrap; }
-  .nav-links a:hover { color: var(--text); }
-  /* Color only — no font-weight change. Bold text is physically wider,
-     and since .nav-right is pinned to nav's right edge (space-between
-     on nav), any width change in .nav-links shifts the whole Features/
-     Pricing/FAQ block left or right. A short bold word (FAQ) and a long
-     one (Support) don't add the same extra width, so switching which
-     link is current visibly shifted that block — this is what was
-     reported as nav "moving". Color alone can't affect layout width. */
-  .nav-links a.current { color: var(--good); }
-
-  .theme-toggle { display: flex; gap: 2px; background: var(--surface-alt); border: 1px solid var(--divider); border-radius: 999px; padding: 3px; flex: none; }
-  .theme-toggle button {
-    display: flex; align-items: center; justify-content: center;
-    width: 26px; height: 26px; border: none; background: transparent; border-radius: 999px;
-    color: var(--meta); cursor: pointer; padding: 0;
-  }
-  .theme-toggle button svg { width: 14px; height: 14px; }
-  .theme-toggle button:hover { color: var(--text); }
-  .theme-toggle button.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
-
-  @media (max-width: 610px) {
-    nav { flex-direction: column; align-items: flex-start; gap: 14px; }
-    .nav-right { flex-wrap: wrap; gap: 14px; }
-    .nav-links { gap: 16px; flex-wrap: wrap; width: auto; flex-shrink: 1; }
-  }
+  /* Nav/brand/footer styling lives in the shared /nav.css (linked in
+     <head>), not here — see that file's own header comment for why. */
 
   h1 {
     font-size: 28px;
@@ -283,15 +218,8 @@
     margin: 0;
   }
 
-  footer {
-    margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--divider);
-    display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between;
-    font-size: 12.5px; color: var(--meta); line-height: 1.6;
-  }
-  footer a { color: var(--meta); text-decoration: none; }
-  footer a:hover { color: var(--text); }
-  .foot-links { display: flex; gap: 18px; flex-wrap: wrap; }
 </style>
+<link rel="stylesheet" href="/nav.css">
 </head>
 <body>
   <main>

@@ -1,0 +1,83 @@
+/* Shared nav + footer styling — the ONE definition used by every page
+   (index.html, support/, release-notes/, privacy/, terms/), loaded via
+   <link rel="stylesheet" href="/nav.css"> instead of being duplicated
+   in each page's own <style> block. Every nav-positioning bug chased in
+   this project turned out to be a CSS difference between five
+   hand-copied blocks that looked identical but weren't quite (brand
+   sizing, nav width tracking each page's own main, a bold-vs-color
+   rendering quirk, a footer in a narrower container than nav). A shared
+   file makes that whole category of bug structurally impossible: there
+   is only one nav, one footer, used everywhere, so there is nothing
+   left for them to drift apart from.
+
+   Relies on each page's own :root custom properties (--bg, --text,
+   --meta, --good, --divider, --surface-alt, --surface, --shadow, --on-
+   accent) already being defined before this loads, since those are the
+   actual color system (transcribed from ios/Cadence/Theme.swift) and
+   belong with each page's light/dark tokens, not here. The one genuine
+   per-page value — the gap between nav and whatever comes after it,
+   44px on the homepage vs 22px elsewhere (that content starts with a
+   plain heading, not a wide hero) — is read from --nav-gap-after, which
+   each page's own <style> block still sets. */
+
+.brand { display: flex; align-items: center; gap: 9px; }
+.brand svg { width: 29px; height: 29px; flex-shrink: 0; }
+.brand-word { font-family: "Sora", sans-serif; font-weight: 500; font-size: 19px; letter-spacing: -0.035em; color: var(--text); }
+
+nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 0; margin-bottom: var(--nav-gap-after, 32px);
+  position: sticky; top: 0; z-index: 20;
+  background: var(--bg);
+  border-bottom: 1px solid var(--divider);
+}
+.nav-brand-link { text-decoration: none; }
+.nav-right { display: flex; align-items: center; gap: 20px; }
+/* Fixed width (desktop only — overridden back to auto in the mobile
+   media query below, where nav-links wraps and this doesn't apply).
+   On macOS, a link rendering in --good green vs the default grey
+   measurably changes that glyph's own antialiased width by a couple
+   pixels — more for a long word ("Release Notes") than a short one
+   ("FAQ"). Since nav-right (nav-links + the toggle) is pinned to nav's
+   right edge, that width change shifted the whole Features/Pricing/FAQ
+   block, not just the word that changed color. A fixed width means
+   nav-links' own box can't grow or shrink no matter how any word
+   renders. Natural content width is ~353px; 358px is just enough
+   buffer to absorb the wobble without overflowing just above the
+   mobile breakpoint, where the margin is tight. */
+.nav-links { display: flex; gap: 22px; width: 358px; flex-shrink: 0; }
+.nav-links a { font-size: 13px; font-weight: 600; color: var(--meta); text-decoration: none; white-space: nowrap; }
+.nav-links a:hover { color: var(--text); }
+/* Color only — never font-weight. Bold text is physically wider, and a
+   width change in .nav-links shifts the whole block beside it (see
+   above) — this is what was reported as nav "moving". */
+.nav-links a.current { color: var(--good); }
+
+/* System/Light/Dark — same three choices, same order, as the app's own
+   Settings -> Appearance picker (Theme.swift's Appearance enum). Icons
+   only (sun/moon/half-circle), no new colors beyond the existing
+   --surface-alt/--divider/--text/--meta tokens. */
+.theme-toggle { display: flex; gap: 2px; background: var(--surface-alt); border: 1px solid var(--divider); border-radius: 999px; padding: 3px; flex: none; }
+.theme-toggle button {
+  display: flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border: none; background: transparent; border-radius: 999px;
+  color: var(--meta); cursor: pointer; padding: 0;
+}
+.theme-toggle button svg { width: 14px; height: 14px; }
+.theme-toggle button:hover { color: var(--text); }
+.theme-toggle button.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
+
+footer {
+  margin-top: 24px; padding-top: 28px; border-top: 1px solid var(--divider);
+  display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between;
+  font-size: 12.5px; color: var(--meta);
+}
+footer a { color: var(--meta); text-decoration: none; }
+footer a:hover { color: var(--text); }
+.foot-links { display: flex; gap: 18px; flex-wrap: wrap; }
+
+@media (max-width: 610px) {
+  nav { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .nav-right { flex-wrap: wrap; gap: 14px; }
+  .nav-links { gap: 16px; flex-wrap: wrap; width: auto; flex-shrink: 1; }
+}
