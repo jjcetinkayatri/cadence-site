@@ -42,7 +42,8 @@ nav {
 .nav-brand-link { text-decoration: none; }
 .nav-right { display: flex; align-items: center; gap: 20px; }
 /* Fixed width (desktop only — overridden back to auto in the mobile
-   media query below, where nav-links wraps and this doesn't apply).
+   media query below, where nav-links becomes a dropdown and this
+   doesn't apply).
    On macOS, a link rendering in --good green vs the default grey
    measurably changes that glyph's own antialiased width by a couple
    pixels — more for a long word ("Release Notes") than a short one
@@ -101,8 +102,44 @@ footer a { color: var(--meta); text-decoration: none; }
 footer a:hover { color: var(--text); }
 .foot-links { display: flex; gap: 18px; flex-wrap: wrap; }
 
+/* Mobile menu button and its dim backdrop: hidden on desktop, where the
+   six links sit inline. theme-toggle.js wires the button and creates the
+   backdrop element, so no page needs extra markup beyond the button. */
+.menu-btn {
+  display: none; width: 36px; height: 36px; padding: 0; flex: none;
+  align-items: center; justify-content: center; cursor: pointer;
+  border: 1px solid var(--divider); border-radius: 10px;
+  background: var(--surface); color: var(--text);
+}
+.menu-btn:focus-visible { outline: 2px solid var(--good); outline-offset: 2px; }
+.menu-btn .x { display: none; }
+.menu-btn[aria-expanded="true"] .bars { display: none; }
+.menu-btn[aria-expanded="true"] .x { display: block; }
+.nav-scrim { display: none; }
+
+/* Phone and small tablet: one compact row (logo, theme toggle, menu
+   button). The six links move into a dropdown of 48px rows below the
+   bar, so the page starts near the top of the screen instead of under a
+   330px stack of wrapped links. Breakpoint stays 900px so the row layout
+   never gets tight enough to collide with the toggle. */
 @media (max-width: 900px) {
-  nav { flex-direction: column; align-items: flex-start; gap: 14px; }
-  .nav-right { flex-wrap: wrap; gap: 14px; }
-  .nav-links { gap: 16px; flex-wrap: wrap; width: auto; flex-shrink: 1; }
+  nav { gap: 10px; }
+  .nav-right { gap: 8px; }
+  .menu-btn { display: flex; }
+  .nav-links {
+    display: none; position: absolute; top: 100%; left: -20px; right: -20px;
+    width: auto; flex-shrink: 1; flex-direction: column; gap: 0;
+    padding: 6px 20px 12px; background: var(--bg);
+    border-bottom: 1px solid var(--divider); box-shadow: var(--shadow);
+  }
+  nav.open .nav-links { display: flex; }
+  .nav-links a {
+    display: flex; align-items: center; justify-content: space-between;
+    min-height: 48px; font-size: 15px; color: var(--text);
+    border-bottom: 1px solid var(--divider);
+  }
+  .nav-links a:last-child { border-bottom: none; }
+  .nav-links a::after { content: "\203A"; color: var(--meta); }
+  .nav-links a.current { color: var(--good); }
+  .nav-scrim.show { display: block; position: fixed; inset: 0; z-index: 19; background: rgba(0, 0, 0, 0.35); }
 }

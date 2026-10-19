@@ -56,4 +56,31 @@
     var linkPath = href.replace(/\/$/, '') || '/';
     if (linkPath !== '/' && linkPath === path) a.classList.add('current');
   });
+
+  // Mobile menu: the button in every page's nav opens the link dropdown
+  // (all styling lives in nav.css; this only toggles state). The dim
+  // backdrop is created here so pages don't each carry extra markup.
+  var nav = document.querySelector('nav');
+  var menuBtn = document.querySelector('.menu-btn');
+  if (nav && menuBtn) {
+    var scrim = document.createElement('div');
+    scrim.className = 'nav-scrim';
+    document.body.appendChild(scrim);
+
+    var setMenu = function (open) {
+      nav.classList.toggle('open', open);
+      scrim.classList.toggle('show', open);
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+    menuBtn.addEventListener('click', function () {
+      setMenu(!nav.classList.contains('open'));
+    });
+    scrim.addEventListener('click', function () { setMenu(false); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') setMenu(false);
+    });
+    window.matchMedia('(min-width: 901px)').addEventListener('change', function (e) {
+      if (e.matches) setMenu(false);
+    });
+  }
 })();
