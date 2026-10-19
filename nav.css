@@ -14,11 +14,13 @@
    --meta, --good, --divider, --surface-alt, --surface, --shadow, --on-
    accent) already being defined before this loads, since those are the
    actual color system (transcribed from ios/Cadence/Theme.swift) and
-   belong with each page's light/dark tokens, not here. The one genuine
-   per-page value — the gap between nav and whatever comes after it,
-   44px on the homepage vs 22px elsewhere (that content starts with a
-   plain heading, not a wide hero) — is read from --nav-gap-after, which
-   each page's own <style> block still sets. */
+   belong with each page's light/dark tokens, not here. Everything about
+   nav itself — including the gap below it, now 32px on every page — is
+   fixed here with no per-page override left at all, by request: the
+   homepage used to get 44px (its hero felt like it wanted more room)
+   and the other four got 22px, and that was still a visible difference
+   between pages even after nav's own position/width were proven
+   identical. */
 
 .brand { display: flex; align-items: center; gap: 9px; }
 .brand svg { width: 29px; height: 29px; flex-shrink: 0; }
@@ -26,7 +28,7 @@
 
 nav {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 0; margin-bottom: var(--nav-gap-after, 32px);
+  padding: 14px 0; margin-bottom: 32px;
   position: sticky; top: 0; z-index: 20;
   background: var(--bg);
   border-bottom: 1px solid var(--divider);
