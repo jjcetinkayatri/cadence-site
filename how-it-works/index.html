@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- Cross-document View Transitions — see index.html's own comment on
+     this same tag for why. -->
+<meta name="view-transition" content="same-origin">
+<title>How Cadence Works</title>
+<script>
+  // Must run before first paint — see theme-toggle.js's own comment.
+  (function () {
+    try {
+      var t = localStorage.getItem('cadence-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500&display=swap" rel="stylesheet">
+<style>
+  /* Tokens transcribed exactly from ios/Cadence/Theme.swift, same as every
+     other page on this site — one shared palette. --warn is new here: the
+     first page on the site to need Theme.swift's amber token, for the
+     recency-dot component below (CadenceRecencyDot's "aging" state). */
+  :root {
+    --bg: #FAFAFA;
+    --surface: #FFFFFF;
+    --surface-alt: #F0F0F0;
+    --divider: #E2E2E2;
+    --text: #141414;
+    --body-text: #3A3A3A;
+    --meta: #6E6E6E;
+    --label: #4A4A4A;
+    --good: #2F6A48;
+    --warn: #A9791F;
+    --accent: #141414;
+    --on-accent: #FFFFFF;
+    --shadow: 0 1px 2px rgba(20, 20, 20, 0.04), 0 8px 24px rgba(20, 20, 20, 0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0C0C0C;
+      --surface: #1A1A1A;
+      --surface-alt: #131313;
+      --divider: #2E2E2E;
+      --text: #F5F5F5;
+      --body-text: #D0D0D0;
+      --meta: #8A8A8A;
+      --label: #B5B5B5;
+      --good: #5FBF8F;
+      --warn: #C9A227;
+      --accent: #F5F5F5;
+      --on-accent: #000000;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0C0C0C;
+    --surface: #1A1A1A;
+    --surface-alt: #131313;
+    --divider: #2E2E2E;
+    --text: #F5F5F5;
+    --body-text: #D0D0D0;
+    --meta: #8A8A8A;
+    --label: #B5B5B5;
+    --good: #5FBF8F;
+    --warn: #C9A227;
+    --accent: #F5F5F5;
+    --on-accent: #000000;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+  html { overflow-y: scroll; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+  }
+  main {
+    width: 100%;
+    max-width: 1080px;
+    padding: 0 20px 64px;
+  }
+  .content {
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+
+  /* Nav/brand/footer styling lives in the shared /nav.css (linked in
+     <head>), not here — see that file's own header comment for why. */
+
+  .eyebrow {
+    font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--good); margin: 0 0 12px;
+  }
+  h1 { font-size: clamp(28px, 4vw, 40px); line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 14px; }
+  .lede { font-size: 16px; line-height: 1.6; color: var(--body-text); margin: 0; max-width: 60ch; }
+
+  /* --- Overview map: 6 nodes + arrows, a wayfinding diagram --- */
+  .overview {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px; margin: 40px 0 8px; padding: 22px 24px;
+    background: var(--surface); border: 1px solid var(--divider); border-radius: 18px; box-shadow: var(--shadow);
+  }
+  .ov-node { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; flex: 1; min-width: 0; }
+  .ov-node a { text-decoration: none; color: inherit; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .ov-icon {
+    width: 40px; height: 40px; border-radius: 999px; background: var(--surface-alt);
+    display: flex; align-items: center; justify-content: center; color: var(--good); flex: none;
+  }
+  .ov-label { font-size: 12.5px; font-weight: 600; }
+  .ov-arrow { color: var(--meta); flex: none; }
+  @media (max-width: 820px) {
+    .overview { flex-direction: column; }
+    .ov-arrow { transform: rotate(90deg); }
+  }
+
+  /* --- Journey rail --- */
+  .journey { display: flex; flex-direction: column; gap: 64px; margin: 56px 0 72px; }
+  .journey-step { display: grid; grid-template-columns: 64px 1fr 320px; column-gap: 32px; align-items: start; }
+  .step-rail { position: relative; display: flex; justify-content: center; }
+  .step-rail::before { content: ""; position: absolute; top: -32px; bottom: -32px; width: 2px; background: var(--divider); }
+  .journey-step:first-child .step-rail::before { top: 24px; }
+  .journey-step:last-child .step-rail::before { bottom: calc(100% - 24px); }
+  .step-icon {
+    position: relative; z-index: 1; width: 48px; height: 48px; border-radius: 999px;
+    background: var(--surface); border: 2px solid var(--good); color: var(--good);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--meta); margin: 2px 0 8px; }
+  .step-text h2 { font-size: 22px; letter-spacing: -0.015em; margin: 0 0 10px; }
+  .step-text p { font-size: 14.5px; line-height: 1.6; color: var(--body-text); margin: 0; max-width: 46ch; }
+  @media (max-width: 760px) {
+    .journey-step { grid-template-columns: 1fr; row-gap: 14px; }
+    .step-rail { display: none; }
+    .step-device { justify-self: center; }
+  }
+
+  /* --- Device frame. Radius/spacing follow ios/Cadence/Theme.swift's own
+     scale: CadenceRadius.card = 16 (cards), .control = 10 (buttons/fields/
+     pills); CadenceSpacing xs/sm/md/lg = 4/8/14/20. The device bezel
+     itself (34px) matches the homepage hero's own device frame — a
+     hardware conceit, not a Theme.swift token. --- */
+  .step-device { display: flex; justify-content: center; }
+  .device { width: 280px; border-radius: 34px; border: 1px solid var(--divider); background: var(--bg); box-shadow: var(--shadow); overflow: hidden; padding: 10px 0 16px; }
+  .device-header { text-align: center; font-size: 12.5px; font-weight: 600; color: var(--label); padding: 6px 0 12px; }
+  .device-body { padding: 0 14px; display: flex; flex-direction: column; gap: 8px; }
+  .d-card { background: var(--surface); border-radius: 16px; padding: 14px; }
+  .d-card.outline { border: 1px solid var(--divider); }
+
+  /* Fit report mockup */
+  .fr-kicker { font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--meta); margin-bottom: 8px; }
+  /* Feasibility badge colors are intentionally fixed hex, not adaptive
+     tokens: Theme.swift's FEAS set (comfortable/marginal/hard) is deliberately
+     solid/white-ink in both themes, separate from the --good/--warn pair
+     used everywhere else on this page. */
+  .feas-badge { display: inline-block; font-size: 11px; font-weight: 700; color: #fff; padding: 3px 9px; border-radius: 999px; }
+  .feas-marginal { background: #9C5F0A; }
+  /* CadenceRecencyDot: a small filled dot marking how fresh a self-reported
+     number is — amber once it's aging, none when fresh/measured. */
+  .cd-dot { display: inline-block; width: 6px; height: 6px; border-radius: 999px; margin-right: 6px; vertical-align: middle; }
+  .cd-dot.warn { background: var(--warn); }
+  .cd-dot.good { background: var(--good); }
+  .fr-range { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 20px; font-weight: 600; margin-top: 10px; }
+  .fr-sub { font-size: 10.5px; color: var(--meta); margin-top: 1px; }
+  .fr-row { display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; font-weight: 600; }
+  .fr-tag { font-size: 10.5px; font-weight: 700; color: var(--good); background: color-mix(in srgb, var(--good) 14%, transparent); padding: 2px 8px; border-radius: 999px; }
+  .fr-tag-limiter { font-size: 10.5px; font-weight: 700; color: var(--text); background: var(--surface-alt); padding: 2px 8px; border-radius: 999px; }
+  .tier-tag { font-size: 10.5px; font-weight: 700; color: var(--label); background: var(--surface-alt); padding: 2px 8px; border-radius: 999px; }
+  .connect-btn { margin-top: 8px; text-align: center; font-size: 12px; font-weight: 600; color: var(--on-accent); background: var(--accent); border-radius: 10px; padding: 8px; }
+  .fr-meter { display: flex; gap: 3px; margin-top: 8px; }
+  .fr-meter span { flex: 1; height: 4px; border-radius: 2px; background: var(--surface-alt); }
+  .fr-meter span.on { background: var(--good); }
+  .fr-note { font-size: 11px; line-height: 1.5; color: var(--meta); margin-top: 7px; }
+
+  /* Taper guidance mockup */
+  .sp-kicker { font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--good); }
+  .sp-sub { font-size: 11px; color: var(--meta); margin-top: 3px; }
+  .sp-phase { display: flex; gap: 8px; padding: 7px 0; }
+  .sp-phase .dot { width: 8px; height: 8px; border-radius: 999px; border: 2px solid var(--divider); margin-top: 4px; flex: none; }
+  .sp-phase.now .dot { background: var(--good); border-color: var(--good); }
+  .sp-phase strong { font-size: 12px; display: block; }
+  .sp-phase.now strong { color: var(--good); }
+  .sp-phase p { font-size: 11px; line-height: 1.45; color: var(--meta); margin: 2px 0 0; }
+
+  /* Chat + voice mockup */
+  .bubble { font-size: 12px; line-height: 1.45; padding: 8px 11px; border-radius: 13px; max-width: 86%; }
+  .bubble.me { align-self: flex-end; background: var(--accent); color: var(--on-accent); border-bottom-right-radius: 4px; }
+  .bubble.agent { align-self: flex-start; background: var(--surface-alt); color: var(--text); border-bottom-left-radius: 4px; }
+  .chat-thread { display: flex; flex-direction: column; gap: 8px; }
+  .cc-kicker { font-size: 9.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--meta); margin-bottom: 6px; }
+  .cc-row { display: flex; align-items: center; justify-content: space-between; font-size: 12px; font-weight: 600; gap: 8px; }
+  .cc-row .feas-badge.small { font-size: 9.5px; padding: 2px 7px; }
+  .cc-range { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; margin-top: 6px; }
+  .cc-link { display: inline-block; font-size: 11px; font-weight: 600; color: var(--good); margin-top: 7px; text-decoration: none; }
+  .chat-chips { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 2px; }
+  .chip { font-size: 10.5px; font-weight: 600; color: var(--label); background: var(--surface-alt); border: 1px solid var(--divider); padding: 4px 9px; border-radius: 999px; }
+  .chat-input { display: flex; align-items: center; justify-content: space-between; background: var(--surface); border: 1px solid var(--divider); border-radius: 10px; padding: 9px 11px; margin-top: 2px; }
+  .ci-placeholder { font-size: 12px; color: var(--meta); }
+  .ci-send { font-size: 11px; font-weight: 700; color: var(--good); }
+  .voice-bar {
+    display: flex; align-items: center; gap: 8px; background: var(--surface);
+    border: 1px solid var(--divider); border-radius: 999px; padding: 7px 10px; margin-top: 2px;
+  }
+  .vb-mark { width: 16px; height: 16px; flex: none; }
+  .vb-wave { flex: 1; height: 18px; min-width: 0; }
+  .vb-btn { width: 22px; height: 22px; border-radius: 999px; border: 1.5px solid var(--good); background: transparent; display: flex; align-items: center; justify-content: center; color: var(--good); flex: none; }
+  .vb-btn.menu { border-color: var(--divider); color: var(--meta); }
+</style>
+<link rel="stylesheet" href="/nav.css">
+</head>
+<body>
+  <main>
+    <nav>
+      <a class="nav-brand-link" href="/">
+        <div class="brand">
+          <!-- Three round-capped diagonal strides, the last one lit — per
+               Theme.swift's CadenceMark construction spec (32-unit grid). -->
+          <svg viewBox="0 0 32 32" role="img" aria-label="Cadence">
+            <line x1="4.5" y1="27" x2="9.5" y2="13" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.55"></line>
+            <line x1="13.5" y1="23" x2="18.5" y2="9" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.5"></line>
+            <line x1="22.5" y1="19" x2="27.5" y2="5" stroke="var(--good)" stroke-width="5" stroke-linecap="round"></line>
+          </svg>
+          <span class="brand-word">cadence</span>
+        </div>
+      </a>
+      <div class="nav-right">
+        <div class="nav-links">
+          <a href="/features">Features</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/faq">FAQ</a>
+          <a href="/how-it-works">How It Works</a>
+          <a href="/release-notes">Release Notes</a>
+          <a href="/support">Support</a>
+        </div>
+        <div class="theme-toggle" role="group" aria-label="Appearance">
+          <button type="button" data-theme-choice="system" aria-label="System appearance" aria-pressed="false">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"></circle><path d="M12 3a9 9 0 000 18z" fill="currentColor"></path></svg>
+          </button>
+          <button type="button" data-theme-choice="light" aria-label="Light appearance" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+          </button>
+          <button type="button" data-theme-choice="dark" aria-label="Dark appearance" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <div class="content">
+
+    <p class="eyebrow">How it works</p>
+    <h1>From "will this race fit me" to a plan you trust.</h1>
+    <p class="lede">Real moments in the app, not a feature list: getting your data in, a straight verdict on a race, a taper that adjusts itself, asking out loud instead of hunting through menus, and alerts that keep working after you log off.</p>
+
+    <div class="overview" aria-hidden="true">
+      <div class="ov-node">
+        <a href="#connect">
+          <span class="ov-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 4v5h5M20 20v-5h-5M5 14a7 7 0 0012 4l3-3M19 10a7 7 0 00-12-4l-3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="ov-label">Connect your data</span>
+        </a>
+      </div>
+      <span class="ov-arrow"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <div class="ov-node">
+        <a href="#verdict">
+          <span class="ov-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 17l5-6 4 4 9-11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="ov-label">Get your verdict</span>
+        </a>
+      </div>
+      <span class="ov-arrow"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <div class="ov-node">
+        <a href="#season">
+          <span class="ov-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 10h18M7 3v4M17 3v4M5 7h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="ov-label">Plan your season</span>
+        </a>
+      </div>
+      <span class="ov-arrow"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <div class="ov-node">
+        <a href="#ask">
+          <span class="ov-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3zM19 11a7 7 0 01-14 0M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="ov-label">Ask anything</span>
+        </a>
+      </div>
+      <span class="ov-arrow"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <div class="ov-node">
+        <a href="#alerts">
+          <span class="ov-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="ov-label">Stay in the loop</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="journey">
+
+      <section class="journey-step" id="connect">
+        <div class="step-rail">
+          <span class="step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 4v5h5M20 20v-5h-5M5 14a7 7 0 0012 4l3-3M19 10a7 7 0 00-12-4l-3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+        <div class="step-text">
+          <p class="step-eyebrow">Step 1</p>
+          <h2>Start with your real training data</h2>
+          <p>Connect Strava for eighteen months of history in one tap &mdash; read-only, and limited to your own activities. Prefer to type it in? Manual works too; every self-reported number says so, with wider bands until it's confirmed.</p>
+        </div>
+        <div class="step-device">
+          <div class="device">
+            <div class="device-header">Connect your data</div>
+            <div class="device-body">
+              <div class="d-card">
+                <div class="fr-kicker">Strava</div>
+                <div class="connect-btn">Connect Strava</div>
+                <div class="fr-note">Read-only and limited to your own activities. We never use it to source race or course data.</div>
+              </div>
+              <div class="d-card outline">
+                <div class="fr-kicker">Or enter manually</div>
+                <div class="fr-row"><span><span class="cd-dot warn"></span>FTP</span><span class="tier-tag">Self-reported</span></div>
+                <div class="fr-row" style="margin-top:6px;"><span><span class="cd-dot good"></span>Max HR</span><span class="tier-tag">Measured</span></div>
+                <div class="fr-row" style="margin-top:6px;"><span>Weight</span><span class="tier-tag">Self-reported</span></div>
+                <div class="fr-note">Typed figures power real predictions with wider bands than measured ones &mdash; every card that leans on them says so. The amber dot marks a number that's starting to age.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="journey-step" id="verdict">
+        <div class="step-rail">
+          <span class="step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 17l5-6 4 4 9-11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+        <div class="step-text">
+          <p class="step-eyebrow">Step 2</p>
+          <h2>See exactly how a race fits you</h2>
+          <p>Enter a race and Cadence checks it against your real training history: a predicted finish range, how hard it should feel, and exactly which part of the course is driving that answer &mdash; never a flat pace multiplier.</p>
+        </div>
+        <div class="step-device">
+          <div class="device">
+            <div class="device-header">Fit report</div>
+            <div class="device-body">
+              <div class="d-card">
+                <div class="fr-kicker">BMO Vancouver Half Marathon</div>
+                <span class="feas-badge feas-marginal">Marginal</span>
+                <div class="fr-range">1:42&ndash;1:48</div>
+                <div class="fr-sub">predicted</div>
+              </div>
+              <div class="d-card outline">
+                <div class="fr-row"><span>Confidence</span><span class="fr-tag">Well-Calibrated</span></div>
+                <div class="fr-meter"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+                <div class="fr-note">4 of 5 &mdash; course file plus a recent race close to this distance.</div>
+              </div>
+              <div class="d-card outline">
+                <div class="fr-row"><span>Limiter</span><span class="fr-tag-limiter">Climbing</span></div>
+                <div class="fr-note">The specific place on the course most likely to slow you down, not an aggregate difficulty number.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="journey-step" id="season">
+        <div class="step-rail">
+          <span class="step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 10h18M7 3v4M17 3v4M5 7h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+        <div class="step-text">
+          <p class="step-eyebrow">Step 3</p>
+          <h2>Taper without guessing</h2>
+          <p>Set a peak race and Cadence lays out a deterministic taper &mdash; four phases built from how many weeks out you are. Never an AI-generated plan, and it tells you plainly which phase you're in right now.</p>
+        </div>
+        <div class="step-device">
+          <div class="device">
+            <div class="device-header">Taper guidance</div>
+            <div class="device-body">
+              <div class="d-card">
+                <div class="sp-kicker">6 weeks out</div>
+                <div class="sp-sub">deterministic, from your weeks-to-race &mdash; never generated</div>
+              </div>
+              <div class="d-card outline">
+                <div class="sp-phase"><span class="dot"></span><div><strong>Peak training</strong><p>Your highest weekly volume and longest long run land here.</p></div></div>
+                <div class="sp-phase now"><span class="dot"></span><div><strong>Early taper &middot; now</strong><p>Volume drops 20&ndash;30% below peak. Pace stays the same.</p></div></div>
+                <div class="sp-phase"><span class="dot"></span><div><strong>Mid taper</strong><p>A bigger cut, 40&ndash;60% below peak. Intensity stays in.</p></div></div>
+                <div class="sp-phase"><span class="dot"></span><div><strong>Race week</strong><p>Volume bottoms out, 60&ndash;80% below peak. Rested, not undertrained.</p></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="journey-step" id="ask">
+        <div class="step-rail">
+          <span class="step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3zM19 11a7 7 0 01-14 0M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+        <div class="step-text">
+          <p class="step-eyebrow">Step 4</p>
+          <h2>Talk to it, out loud or typed</h2>
+          <p>Paste a race URL, ask what fits you, or just talk &mdash; voice or text. Cadence acts on it directly: pulls up the report that answers you, instead of making you dig through tabs.</p>
+        </div>
+        <div class="step-device">
+          <div class="device">
+            <div class="device-header">Ask Cadence</div>
+            <div class="device-body">
+              <div class="chat-thread">
+                <div class="bubble me">Am I ready for the Vancouver half?</div>
+                <div class="d-card outline">
+                  <div class="cc-kicker">In context</div>
+                  <div class="cc-row"><span>BMO Vancouver Half</span><span class="feas-badge small feas-marginal">Marginal</span></div>
+                  <div class="cc-range">1:42&ndash;1:48</div>
+                  <a class="cc-link" href="#">Open report</a>
+                </div>
+                <div class="bubble agent">Marginal &mdash; same climbing limiter as last time. Full report above.</div>
+              </div>
+              <div class="chat-chips">
+                <span class="chip">What fits me?</span>
+                <span class="chip">Am I ready?</span>
+                <span class="chip">No-elevation race</span>
+              </div>
+              <div class="chat-input"><span class="ci-placeholder">Ask, or paste a race URL</span><span class="ci-send">Send</span></div>
+              <div class="voice-bar">
+                <svg class="vb-mark" viewBox="0 0 32 32"><line x1="4.5" y1="27" x2="9.5" y2="13" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.55"></line><line x1="13.5" y1="23" x2="18.5" y2="9" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.5"></line><line x1="22.5" y1="19" x2="27.5" y2="5" stroke="var(--good)" stroke-width="5" stroke-linecap="round"></line></svg>
+                <svg class="vb-wave" viewBox="0 0 160 20" preserveAspectRatio="none" role="img" aria-label="live microphone waveform">
+                  <!-- Two irregular, tapering strands (calm near the mic/buttons,
+                       livelier mid-bar) instead of a uniform repeating sine —
+                       a plain periodic wave read as artificial next to the real
+                       capsule's organic, braided waveform. -->
+                  <path d="M0,10 C6,10 10,5 18,6 C26,7 30,15 38,14 C46,13 48,4 56,5 C64,6 66,17 74,16 C82,15 84,5 92,7 C100,9 104,14 112,12 C120,10 124,8 132,9 C140,10 146,10 152,10 C156,10 158,10 160,10" fill="none" stroke="var(--good)" stroke-width="1.4" opacity="0.6"/>
+                  <path d="M0,10 C8,10 12,14 20,13 C28,12 32,4 40,5 C48,6 50,16 58,15 C66,14 70,6 78,8 C86,10 90,15 98,13 C106,11 110,7 118,9 C126,11 132,10 140,10 C148,10 154,10 160,10" fill="none" stroke="var(--meta)" stroke-width="1.3" opacity="0.45"/>
+                </svg>
+                <span class="vb-btn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v4"/></svg></span>
+                <span class="vb-btn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10v4h4l5 5V5L7 10H3z"/><path d="M16 8a4 4 0 010 8"/></svg></span>
+                <span class="vb-btn menu"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="journey-step" id="alerts">
+        <div class="step-rail">
+          <span class="step-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+        <div class="step-text">
+          <p class="step-eyebrow">Step 5</p>
+          <h2>It keeps watching after you log off</h2>
+          <p>Every time the race catalog refreshes, Cadence checks it against your fitness. A race that scores a real fit becomes a notification, not something you have to go looking for.</p>
+        </div>
+        <div class="step-device">
+          <div class="device">
+            <div class="device-header">New-fit alert</div>
+            <div class="device-body">
+              <div class="d-card outline" style="display:flex; gap:10px; align-items:flex-start;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--good)" stroke-width="2" style="flex:none; margin-top:1px;"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <div>
+                  <strong style="font-size:12.5px;">New race that fits: Fall Classic 10K</strong>
+                  <div class="fr-note">Predicted 42:10&ndash;44:30. Limiter: climbing.</div>
+                </div>
+              </div>
+              <div class="d-card">
+                <div class="fr-row"><span>New-fit alerts</span><span class="fr-tag-limiter">5 / 30 days</span></div>
+                <div class="fr-note">Unlimited on Season.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    </div>
+    <footer>
+      <span>&copy; 2026 Cadence Sports Race Prediction.</span>
+      <div class="foot-links">
+        <a href="/support">Support</a>
+        <a href="/terms">Terms &amp; Conditions</a>
+        <a href="/privacy">Privacy Policy</a>
+      </div>
+    </footer>
+  </main>
+<script src="/theme-toggle.js"></script>
+</body>
+</html>
