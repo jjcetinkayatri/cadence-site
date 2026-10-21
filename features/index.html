@@ -32,6 +32,7 @@
     --meta: #6E6E6E;
     --label: #4A4A4A;
     --good: #2F6A48;
+    --warn: #A9791F;
     --accent: #141414;
     --on-accent: #FFFFFF;
     --shadow: 0 1px 2px rgba(20, 20, 20, 0.04), 0 8px 24px rgba(20, 20, 20, 0.06);
@@ -47,6 +48,7 @@
       --meta: #8A8A8A;
       --label: #B5B5B5;
       --good: #5FBF8F;
+      --warn: #C9A227;
       --accent: #F5F5F5;
       --on-accent: #000000;
       --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
@@ -62,6 +64,7 @@
     --meta: #8A8A8A;
     --label: #B5B5B5;
     --good: #5FBF8F;
+    --warn: #C9A227;
     --accent: #F5F5F5;
     --on-accent: #000000;
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
@@ -116,20 +119,119 @@
     margin: 0 0 32px;
   }
 
-  /* Features grid — same rules as the homepage's own #features section. */
-  .features { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 8px 0 64px; }
-  @media (max-width: 900px) { .features { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 520px) { .features { grid-template-columns: 1fr; } }
-  .feature-card {
-    background: var(--surface); border: 1px solid var(--divider); border-radius: 16px;
-    padding: 20px; display: flex; flex-direction: column; gap: 10px;
+  /* Feature sections: text beside an app screen, in the same device frame the
+     How It Works page uses. */
+  .features-list { display: flex; flex-direction: column; gap: 72px; margin: 48px 0 40px; }
+  .feat { display: grid; grid-template-columns: 1fr 320px; column-gap: 56px; align-items: center; }
+  .feat.rev { grid-template-columns: 320px 1fr; }
+  .feat.rev .feat-text { order: 2; }
+  .feat.rev .step-device { order: 1; }
+  .feat-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--surface-alt); color: var(--good); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+  .feat-text h2 { font-size: 24px; letter-spacing: -0.015em; margin: 0 0 10px; text-wrap: balance; }
+  .feat-text p { font-size: 15px; line-height: 1.6; color: var(--body-text); margin: 0 0 14px; max-width: 48ch; }
+  .feat-text ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px; max-width: 48ch; }
+  .feat-text li { font-size: 13.5px; line-height: 1.5; color: var(--body-text); padding-left: 24px; position: relative; }
+  .feat-text li::before { content: ""; position: absolute; left: 2px; top: 5px; width: 10px; height: 6px; border-left: 2px solid var(--good); border-bottom: 2px solid var(--good); transform: rotate(-45deg); }
+  .newtag { display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--good); border: 1px solid var(--good); border-radius: 999px; padding: 2px 8px; margin-left: 8px; vertical-align: middle; }
+  @media (max-width: 820px) {
+    .feat, .feat.rev { grid-template-columns: 1fr; row-gap: 20px; }
+    .feat.rev .feat-text, .feat.rev .step-device { order: 0; }
+    .step-device { justify-self: center; }
   }
-  .feature-icon {
-    width: 34px; height: 34px; border-radius: 9px; background: var(--surface-alt);
-    display: flex; align-items: center; justify-content: center; color: var(--good);
+  /* extra screen pieces */
+  .searchbar { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--divider); border-radius: 10px; padding: 8px 10px; font-size: 12px; color: var(--meta); }
+  .rc-top { display: flex; align-items: center; justify-content: space-between; font-size: 10.5px; color: var(--meta); margin-bottom: 6px; }
+  .rc-tag { font-size: 10px; font-weight: 700; border: 1px solid var(--divider); border-radius: 999px; padding: 2px 7px; color: var(--label); }
+  .rc-title { font-size: 13px; font-weight: 600; line-height: 1.3; }
+  .rc-meta { font-size: 10.5px; color: var(--meta); margin-top: 3px; line-height: 1.4; }
+  .rc-range-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+  .rc-range { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; }
+  .rc-actions { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+  .rc-actions span { font-size: 11px; font-weight: 600; }
+  .rc-add { background: var(--accent); color: var(--on-accent); border-radius: 999px; padding: 5px 11px; }
+  .feas-comfortable { background: #2E7D4F; } .feas-hard { background: #C0392B; }
+  .prow { display: flex; justify-content: space-between; gap: 10px; font-size: 11.5px; padding: 5px 0; }
+  .prow .l { color: var(--body-text); } .prow .r { text-align: right; } .prow .r b { display: block; font-weight: 500; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 11.5px; color: var(--text); } .prow .r i { display: block; font-style: normal; font-size: 9.5px; color: var(--meta); }
+  .platrow { display: flex; align-items: center; gap: 9px; padding: 7px 0; }
+  .platbadge { width: 26px; height: 26px; border-radius: 8px; background: var(--surface-alt); border: 1px solid var(--divider); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex: none; }
+  .platmid { flex: 1; min-width: 0; } .platmid b { display: block; font-size: 12px; } .platmid span { font-size: 10px; color: var(--meta); }
+  .smallbtn { font-size: 10.5px; font-weight: 600; border: 1px solid var(--divider); border-radius: 8px; padding: 4px 9px; color: var(--text); }
+  .smallbtn.on { color: var(--good); border-color: var(--good); }
+  .gapwarn { background: color-mix(in srgb, var(--warn) 14%, transparent); border-radius: 10px; padding: 8px 10px; }
+  .gapwarn b { display: block; font-size: 10.5px; color: var(--warn); } .gapwarn span { font-size: 10px; line-height: 1.45; color: var(--body-text); }
+  .gapok { font-size: 10px; color: var(--meta); padding: 2px 2px; }
+  .peaktag { font-size: 9.5px; font-weight: 700; background: var(--surface-alt); border-radius: 999px; padding: 2px 8px; color: var(--text); }
+
+  /* --- Device frame. Radius/spacing follow ios/Cadence/Theme.swift's own
+     scale: CadenceRadius.card = 16 (cards), .control = 10 (buttons/fields/
+     pills); CadenceSpacing xs/sm/md/lg = 4/8/14/20. The device bezel
+     itself (34px) matches the homepage hero's own device frame — a
+     hardware conceit, not a Theme.swift token. --- */
+  .step-device { display: flex; justify-content: center; }
+  .device { width: 280px; border-radius: 34px; border: 1px solid var(--divider); background: var(--bg); box-shadow: var(--shadow); overflow: hidden; padding: 10px 0 16px; }
+  .device-header { text-align: center; font-size: 12.5px; font-weight: 600; color: var(--label); padding: 6px 0 12px; }
+  .device-body { padding: 0 14px; display: flex; flex-direction: column; gap: 8px; }
+  .d-card { background: var(--surface); border-radius: 16px; padding: 14px; }
+  .d-card.outline { border: 1px solid var(--divider); }
+
+  /* Fit report mockup */
+  .fr-kicker { font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--meta); margin-bottom: 8px; }
+  /* Feasibility badge colors are intentionally fixed hex, not adaptive
+     tokens: Theme.swift's FEAS set (comfortable/marginal/hard) is deliberately
+     solid/white-ink in both themes, separate from the --good/--warn pair
+     used everywhere else on this page. */
+  .feas-badge { display: inline-block; font-size: 11px; font-weight: 700; color: #fff; padding: 3px 9px; border-radius: 999px; }
+  .feas-marginal { background: #9C5F0A; }
+  /* CadenceRecencyDot: a small filled dot marking how fresh a self-reported
+     number is — amber once it's aging, none when fresh/measured. */
+  .cd-dot { display: inline-block; width: 6px; height: 6px; border-radius: 999px; margin-right: 6px; vertical-align: middle; }
+  .cd-dot.warn { background: var(--warn); }
+  .cd-dot.good { background: var(--good); }
+  .fr-range { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 20px; font-weight: 600; margin-top: 10px; }
+  .fr-sub { font-size: 10.5px; color: var(--meta); margin-top: 1px; }
+  .fr-row { display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; font-weight: 600; }
+  .fr-tag { font-size: 10.5px; font-weight: 700; color: var(--good); background: color-mix(in srgb, var(--good) 14%, transparent); padding: 2px 8px; border-radius: 999px; }
+  .fr-tag-limiter { font-size: 10.5px; font-weight: 700; color: var(--text); background: var(--surface-alt); padding: 2px 8px; border-radius: 999px; }
+  .tier-tag { font-size: 10.5px; font-weight: 700; color: var(--label); background: var(--surface-alt); padding: 2px 8px; border-radius: 999px; }
+  .connect-btn { margin-top: 8px; text-align: center; font-size: 12px; font-weight: 600; color: var(--on-accent); background: var(--accent); border-radius: 10px; padding: 8px; }
+  .fr-meter { display: flex; gap: 3px; margin-top: 8px; }
+  .fr-meter span { flex: 1; height: 4px; border-radius: 2px; background: var(--surface-alt); }
+  .fr-meter span.on { background: var(--good); }
+  .fr-note { font-size: 11px; line-height: 1.5; color: var(--meta); margin-top: 7px; }
+
+  /* Taper guidance mockup */
+  .sp-kicker { font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--good); }
+  .sp-sub { font-size: 11px; color: var(--meta); margin-top: 3px; }
+  .sp-phase { display: flex; gap: 8px; padding: 7px 0; }
+  .sp-phase .dot { width: 8px; height: 8px; border-radius: 999px; border: 2px solid var(--divider); margin-top: 4px; flex: none; }
+  .sp-phase.now .dot { background: var(--good); border-color: var(--good); }
+  .sp-phase strong { font-size: 12px; display: block; }
+  .sp-phase.now strong { color: var(--good); }
+  .sp-phase p { font-size: 11px; line-height: 1.45; color: var(--meta); margin: 2px 0 0; }
+
+  /* Chat + voice mockup */
+  .bubble { font-size: 12px; line-height: 1.45; padding: 8px 11px; border-radius: 13px; max-width: 86%; }
+  .bubble.me { align-self: flex-end; background: var(--accent); color: var(--on-accent); border-bottom-right-radius: 4px; }
+  .bubble.agent { align-self: flex-start; background: var(--surface-alt); color: var(--text); border-bottom-left-radius: 4px; }
+  .chat-thread { display: flex; flex-direction: column; gap: 8px; }
+  .cc-kicker { font-size: 9.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--meta); margin-bottom: 6px; }
+  .cc-row { display: flex; align-items: center; justify-content: space-between; font-size: 12px; font-weight: 600; gap: 8px; }
+  .cc-row .feas-badge.small { font-size: 9.5px; padding: 2px 7px; }
+  .cc-range { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; margin-top: 6px; }
+  .cc-link { display: inline-block; font-size: 11px; font-weight: 600; color: var(--good); margin-top: 7px; text-decoration: none; }
+  .chat-chips { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 2px; }
+  .chip { font-size: 10.5px; font-weight: 600; color: var(--label); background: var(--surface-alt); border: 1px solid var(--divider); padding: 4px 9px; border-radius: 999px; }
+  .chat-input { display: flex; align-items: center; justify-content: space-between; background: var(--surface); border: 1px solid var(--divider); border-radius: 10px; padding: 9px 11px; margin-top: 2px; }
+  .ci-placeholder { font-size: 12px; color: var(--meta); }
+  .ci-send { font-size: 11px; font-weight: 700; color: var(--good); }
+  .voice-bar {
+    display: flex; align-items: center; gap: 8px; background: var(--surface);
+    border: 1px solid var(--divider); border-radius: 999px; padding: 7px 10px; margin-top: 2px;
   }
-  .feature-card h3 { font-size: 14.5px; font-weight: 600; margin: 0; }
-  .feature-card p { font-size: 13px; line-height: 1.55; color: var(--body-text); margin: 0; }
+  .vb-mark { width: 16px; height: 16px; flex: none; }
+  .vb-wave { flex: 1; height: 18px; min-width: 0; }
+  .vb-btn { width: 22px; height: 22px; border-radius: 999px; border: 1.5px solid var(--good); background: transparent; display: flex; align-items: center; justify-content: center; color: var(--good); flex: none; }
+  .vb-btn.menu { border-color: var(--divider); color: var(--meta); }
 </style>
 <link rel="stylesheet" href="/nav.css">
 </head>
@@ -176,28 +278,7 @@
     <h1>Built on your real numbers</h1>
     <p class="lede">Every prediction traces back to a physiological model and your own training history, never a flat pace chart.</p>
 
-    <div class="features">
-      <div class="feature-card">
-        <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 17l5-6 4 4 9-11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3>Physiology-based prediction</h3>
-        <p>A real baseline model, not a flat distance multiplier, corrected against your own history and course elevation.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 12h4l2-7 4 14 2-7h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3>Strava auto-sync</h3>
-        <p>Connect once and your power curve, long runs, and rides stay current automatically, with no manual re-entry.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 10h18M7 3v4M17 3v4M5 7h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3>Season planning</h3>
-        <p>See your whole season at once, with deterministic taper guidance heading into your peak race.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3zM19 11a7 7 0 01-14 0M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3>Ask it anything, out loud</h3>
-        <p>Voice or text: add a race, drop one, pull up a fit report. Cadence acts on it directly.</p>
-      </div>
-    </div>
+    <div class="features-list"><section class="feat"><div class="feat-text"><div class="feat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></div><h2>Find races that fit you</h2><p>Search by name, city or region and see each race's distance, elevation and your predicted finish range before you commit. Live listings cover the US and Canada, with a hand-picked set across Europe, the UK, Australia and New Zealand.</p><ul><li>Elevation gain on every race, with where it came from</li><li>A finish range and how hard it should feel, before you sign up</li><li>Track a race to add it to your season, drop it any time</li></ul></div><div class="step-device"><div class="device"><div class="device-header">Discover</div><div class="device-body"><div class="searchbar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Search races</div><div class="d-card"><div class="rc-top"><span class="rc-tag">Run</span><span>2 wk out</span></div><div class="rc-title">BMO Vancouver Half Marathon</div><div class="rc-meta">2 May &middot; Vancouver, BC &middot; 21.1 km &middot; 80 m gain</div><div class="rc-range-row"><span class="feas-badge feas-marginal">Marginal</span><span class="rc-range">1:42 &ndash; 1:48</span></div><div class="rc-actions"><span class="tier-tag">Well-Calibrated</span><span>Report</span><span class="rc-add">+ Add</span></div></div><div class="d-card"><div class="rc-top"><span class="rc-tag">Ride</span><span>9 wk out</span></div><div class="rc-title">Sportful Dolomiti Race</div><div class="rc-meta">20 Jun &middot; Feltre, Italy &middot; 204 km &middot; 4,920 m gain</div><div class="rc-range-row"><span class="feas-badge feas-hard">Hard</span><span class="rc-range">7:41 &ndash; 8:36</span></div><div class="rc-actions"><span class="tier-tag">Partial</span><span>Report</span><span class="rc-add">+ Add</span></div></div></div></div></div></section><section class="feat rev"><div class="feat-text"><div class="feat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-6 4 4 9-11"/></svg></div><h2>Physiology-based prediction</h2><p>A real baseline model, not a flat distance multiplier, corrected against your own history and course elevation.</p><ul><li>A finish range, not a single number</li><li>Every input shows its source and how sure we are</li><li>Tighter as you confirm real race results</li></ul></div><div class="step-device"><div class="device"><div class="device-header">Fit report</div><div class="device-body"><div class="d-card"><div class="fr-kicker">BMO Vancouver Half Marathon</div><span class="feas-badge feas-marginal">Marginal</span><div class="fr-range">1:42&ndash;1:48</div><div class="fr-sub">predicted</div></div><div class="d-card outline"><div class="fr-kicker" style="color:var(--good)">Where this comes from</div><div class="prow"><span class="l">Predicted time</span><span class="r"><b>1:42 &ndash; 1:48</b><i>Cadence&rsquo;s Prediction Model</i></span></div><div class="prow"><span class="l">Elevation</span><span class="r"><b>80 m</b><i>bmovanmarathon.ca &middot; verified</i></span></div><div class="prow"><span class="l">Surface</span><span class="r"><b>road</b><i>tagged from the course &middot; verified</i></span></div><div class="prow"><span class="l">Your pace data</span><span class="r"><b>current</b><i>from Strava &middot; synced 3 hours ago</i></span></div></div><div class="d-card outline"><div class="fr-row"><span>Confidence</span><span class="fr-tag">Well-Calibrated</span></div><div class="fr-meter"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div></div></div></div></div></section><section class="feat"><div class="feat-text"><div class="feat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v5h5M20 20v-5h-5M5 14a7 7 0 0012 4l3-3M19 10a7 7 0 00-12-4l-3 3"/></svg></div><h2>Strava auto-sync</h2><p>Connect once and your power curve, long runs and rides refresh whenever you open the app, with no manual re-entry. Part of Season.</p><ul><li>Read-only and limited to your own activities</li><li>Prefer to type it in? Manual numbers work too, labeled as self-reported</li><li>More platforms are coming: tell us which one you want</li></ul></div><div class="step-device"><div class="device"><div class="device-header">Connections</div><div class="device-body"><div class="fr-kicker" style="margin:2px 2px 0">Connected</div><div class="d-card"><div class="platrow"><div class="platbadge">S</div><div class="platmid"><b>Strava</b><span>Connected &middot; synced 3 hours ago</span></div><span class="smallbtn">Disconnect</span></div><div class="fr-note" style="margin-top:2px">Compatible with Strava</div></div><div class="fr-kicker" style="margin:6px 2px 0">Coming soon</div><div class="d-card outline"><div class="platrow"><div class="platbadge">C</div><div class="platmid"><b>COROS</b><span>Tell us you want it</span></div><span class="smallbtn">Request</span></div><div class="platrow"><div class="platbadge">G</div><div class="platmid"><b>Garmin</b><span>Thanks, we have your request</span></div><span class="smallbtn on">&#10003; Requested</span></div><div class="platrow"><div class="platbadge">Su</div><div class="platmid"><b>Suunto</b><span>Tell us you want it</span></div><span class="smallbtn">Request</span></div></div></div></div></div></section><section class="feat rev"><div class="feat-text"><div class="feat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h18M7 3v4M17 3v4M5 7h14a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2z"/></svg></div><h2>Season planning</h2><p>See your whole season at once, with deterministic taper guidance heading into your peak race.</p><ul><li>Flags races that are too close together to recover from</li><li>Taper phases worked out from how many weeks out you are</li><li>Choose which race is your peak</li></ul></div><div class="step-device"><div class="device"><div class="device-header">Season plan</div><div class="device-body"><div class="fr-note" style="margin:0 2px">3 races tracked</div><div class="d-card"><div class="sp-kicker">Taper guidance</div><div class="sp-sub">Early taper &middot; 6 weeks out</div><div class="fr-note">A general guide based on how many weeks out you are, not a personalized plan.</div></div><div class="fr-kicker" style="margin:4px 2px 0">Your season</div><div class="d-card"><div class="fr-row"><span>BMO Vancouver Half</span><span class="peaktag">Peak race</span></div><div class="rc-meta">2 May &middot; 6 wk out &middot; Run &middot; 21.1 km</div><div style="margin-top:7px"><span class="feas-badge feas-marginal">Marginal</span></div></div><div class="gapwarn"><b>2 weeks between races &mdash; tight</b><span>Not enough time to recover from the Vancouver Half before the Fall Classic 10K.</span></div><div class="d-card"><div class="fr-row"><span>Fall Classic 10K</span></div><div class="rc-meta">16 May &middot; 8 wk out &middot; Run &middot; 10 km</div><div style="margin-top:7px"><span class="feas-badge feas-comfortable">Comfortable</span></div></div></div></div></div></section><section class="feat"><div class="feat-text"><div class="feat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 003-3V6a3 3 0 00-6 0v6a3 3 0 003 3zM19 11a7 7 0 01-14 0M12 19v3"/></svg></div><h2>Ask it anything, out loud</h2><p>Voice or text: add a race, drop one, pull up a fit report. Cadence acts on it directly.</p><ul><li>Talk or type, whichever is easier right now</li><li>Paste a race link and it builds the report</li><li>Opens the report that answers your question</li></ul></div><div class="step-device"><div class="device"><div class="device-header">Ask Cadence</div><div class="device-body"><div class="chat-thread"><div class="bubble me">Add the Melbourne Marathon and tell me how it fits</div><div class="d-card outline"><div class="cc-kicker">Added</div><div class="cc-row"><span>Melbourne Marathon</span><span class="feas-badge small feas-marginal">Marginal</span></div><div class="cc-range">3:38&ndash;3:58</div><a class="cc-link" href="#">Open report</a></div><div class="bubble agent">Added for 10 Oct. Marginal: the second half is where it gets tight.</div></div><div class="chat-chips"><span class="chip">What fits me?</span><span class="chip">Drop a race</span></div><div class="chat-input"><span class="ci-placeholder">Ask, or paste a race URL</span><span class="ci-send">Send</span></div><div class="voice-bar"><svg class="vb-mark" viewBox="0 0 32 32"><line x1="4.5" y1="27" x2="9.5" y2="13" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.55"></line><line x1="13.5" y1="23" x2="18.5" y2="9" stroke="var(--meta)" stroke-width="5" stroke-linecap="round" opacity="0.5"></line><line x1="22.5" y1="19" x2="27.5" y2="5" stroke="var(--good)" stroke-width="5" stroke-linecap="round"></line></svg><svg class="vb-wave" viewBox="0 0 160 20" preserveAspectRatio="none" role="img" aria-label="live microphone waveform"><path d="M0,10 C6,10 10,5 18,6 C26,7 30,15 38,14 C46,13 48,4 56,5 C64,6 66,17 74,16 C82,15 84,5 92,7 C100,9 104,14 112,12 C120,10 124,8 132,9 C140,10 146,10 152,10 C156,10 158,10 160,10" fill="none" stroke="var(--good)" stroke-width="1.4" opacity="0.9"/><path d="M0,10 C8,10 12,14 20,13 C28,12 32,4 40,5 C48,6 50,16 58,15 C66,14 70,6 78,8 C86,10 90,15 98,13 C106,11 110,7 118,9 C126,11 132,10 140,10 C148,10 154,10 160,10" fill="none" stroke="var(--meta)" stroke-width="1.3" opacity="0.45"/></svg><span class="vb-btn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v4"/></svg></span><span class="vb-btn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10v4h4l5 5V5L7 10H3z"/><path d="M16 8a4 4 0 010 8"/></svg></span><span class="vb-btn menu"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg></span></div></div></div></div></section></div>
 
     </div>
     <footer>
