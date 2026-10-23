@@ -134,34 +134,47 @@
   .cta-note { font-size: 12.5px; color: var(--meta); }
   .cta-note a { color: var(--text); }
 
-  /* Device frame — a recreation of the real Plan screen (real copy, real
-     comparison-table rows, real CA$8.99 price), not a stock photo. */
+  /* Device frame — a recreation of the real Fit report screen (same copy
+     and components as the Features page), not a stock photo. */
   .device-wrap { display: flex; justify-content: center; }
-  .device {
-    width: 290px; border-radius: 34px; border: 1px solid var(--divider);
-    background: var(--bg); box-shadow: var(--shadow); overflow: hidden;
-    padding: 10px 0 16px;
-  }
-  .device-header { text-align: center; font-size: 13px; font-weight: 600; padding: 6px 0 14px; color: var(--text); }
-  .device-body { padding: 0 14px; display: flex; flex-direction: column; gap: 12px; }
-  .plan-card { background: var(--surface); border-radius: 14px; padding: 12px; }
-  .plan-card.outline { border: 1px solid var(--divider); }
-  .plan-row { display: flex; align-items: baseline; justify-content: space-between; }
-  .plan-name { font-size: 15px; font-weight: 600; }
-  .plan-price { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; }
-  .plan-sub { font-size: 10px; color: var(--meta); margin-top: 2px; }
-  .upgrade-btn {
-    margin-top: 8px; width: 100%; height: 36px; border-radius: 9px; border: none;
-    background: var(--accent); color: var(--on-accent); font-size: 13px; font-weight: 600;
-  }
-  .compare { background: var(--surface); border-radius: 14px; padding: 10px 12px; }
-  .compare-head { display: grid; grid-template-columns: 1.5fr 1fr 1fr; padding-bottom: 6px; border-bottom: 1px solid var(--divider); }
-  .compare-head span:nth-child(2), .compare-head span:nth-child(3) { text-align: center; font-size: 9.5px; font-weight: 700; color: var(--meta); }
-  .compare-head span:nth-child(3) { color: var(--text); }
-  .compare-row { display: grid; grid-template-columns: 1.5fr 1fr 1fr; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--divider); font-size: 11px; }
-  .compare-row:last-child { border-bottom: none; }
-  .compare-row span:nth-child(2), .compare-row span:nth-child(3) { text-align: center; color: var(--body-text); }
-  .check { color: var(--good); font-weight: 700; }
+  .prow { display: flex; justify-content: space-between; gap: 10px; font-size: 11.5px; padding: 5px 0; }
+  .prow .l { color: var(--body-text); } .prow .r { text-align: right; } .prow .r b { display: block; font-weight: 500; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 11.5px; color: var(--text); } .prow .r i { display: block; font-style: normal; font-size: 9.5px; color: var(--meta); }
+  /* --- Device frame. Radius/spacing follow ios/Cadence/Theme.swift's own
+     scale: CadenceRadius.card = 16 (cards), .control = 10 (buttons/fields/
+     pills); CadenceSpacing xs/sm/md/lg = 4/8/14/20. The device bezel
+     itself (34px) matches the homepage hero's own device frame — a
+     hardware conceit, not a Theme.swift token. --- */
+  .step-device { display: flex; justify-content: center; }
+  .device { width: 280px; border-radius: 34px; border: 1px solid var(--divider); background: var(--bg); box-shadow: var(--shadow); overflow: hidden; padding: 10px 0 16px; }
+  .device-header { text-align: center; font-size: 12.5px; font-weight: 600; color: var(--label); padding: 6px 0 12px; }
+  .device-body { padding: 0 14px; display: flex; flex-direction: column; gap: 8px; }
+  .d-card { background: var(--surface); border-radius: 16px; padding: 14px; }
+  .d-card.outline { border: 1px solid var(--divider); }
+
+  /* Fit report mockup */
+  .fr-kicker { font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--meta); margin-bottom: 8px; }
+  /* Feasibility badge colors are intentionally fixed hex, not adaptive
+     tokens: Theme.swift's FEAS set (comfortable/marginal/hard) is deliberately
+     solid/white-ink in both themes, separate from the --good/--warn pair
+     used everywhere else on this page. */
+  .feas-badge { display: inline-block; font-size: 11px; font-weight: 700; color: #fff; padding: 3px 9px; border-radius: 999px; }
+  .feas-marginal { background: #9C5F0A; }
+  /* CadenceRecencyDot: a small filled dot marking how fresh a self-reported
+     number is — amber once it's aging, none when fresh/measured. */
+  .cd-dot { display: inline-block; width: 6px; height: 6px; border-radius: 999px; margin-right: 6px; vertical-align: middle; }
+  .cd-dot.warn { background: var(--warn); }
+  .cd-dot.good { background: var(--good); }
+  .fr-range { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 20px; font-weight: 600; margin-top: 10px; }
+  .fr-sub { font-size: 10.5px; color: var(--meta); margin-top: 1px; }
+  .fr-row { display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; font-weight: 600; }
+  .fr-tag { font-size: 10.5px; font-weight: 700; color: var(--good); background: color-mix(in srgb, var(--good) 14%, transparent); padding: 2px 8px; border-radius: 999px; }
+  .fr-tag-limiter { font-size: 10.5px; font-weight: 700; color: var(--text); background: var(--surface-alt); padding: 2px 8px; border-radius: 999px; }
+  .tier-tag { font-size: 10.5px; font-weight: 700; color: var(--label); background: var(--surface-alt); padding: 2px 8px; border-radius: 999px; }
+  .connect-btn { margin-top: 8px; text-align: center; font-size: 12px; font-weight: 600; color: var(--on-accent); background: var(--accent); border-radius: 10px; padding: 8px; }
+  .fr-meter { display: flex; gap: 3px; margin-top: 8px; }
+  .fr-meter span { flex: 1; height: 4px; border-radius: 2px; background: var(--surface-alt); }
+  .fr-meter span.on { background: var(--good); }
+  .fr-note { font-size: 11px; line-height: 1.5; color: var(--meta); margin-top: 7px; }
 
 </style>
 <link rel="stylesheet" href="/nav.css">
@@ -218,31 +231,7 @@
       </div>
     </div>
     <div class="device-wrap">
-      <div class="device">
-        <div class="device-header">Plan</div>
-        <div class="device-body">
-          <div class="plan-card">
-            <div class="plan-row"><span class="plan-name">Free</span><span class="plan-price">$0</span></div>
-            <div class="plan-sub">Current plan</div>
-          </div>
-          <div class="plan-card outline">
-            <div class="plan-row">
-              <span class="plan-name">Season</span>
-              <span class="plan-price">CA$8.99 <span style="color:var(--meta); font-weight:400;">/ mo</span></span>
-            </div>
-            <button class="upgrade-btn">Upgrade</button>
-          </div>
-          <div class="compare">
-            <div class="compare-head"><span></span><span>Free</span><span>Season</span></div>
-            <div class="compare-row"><span>Fit reports</span><span>Unlimited</span><span>Unlimited</span></div>
-            <div class="compare-row"><span>Races tracked</span><span>2 at a time</span><span>Unlimited</span></div>
-            <div class="compare-row"><span>New-fit alerts</span><span>5 / 30 days</span><span>Unlimited</span></div>
-            <div class="compare-row"><span>Season planning</span><span>&ndash;</span><span class="check">&#10003;</span></div>
-            <div class="compare-row"><span>Track record</span><span>&ndash;</span><span class="check">&#10003;</span></div>
-            <div class="compare-row"><span>Strava auto-sync</span><span>&ndash;</span><span class="check">&#10003;</span></div>
-          </div>
-        </div>
-      </div>
+      <div class="device"><div class="device-header">Fit report</div><div class="device-body"><div class="d-card"><div class="fr-kicker">BMO Vancouver Half Marathon</div><span class="feas-badge feas-marginal">Marginal</span><div class="fr-range">1:42&ndash;1:48</div><div class="fr-sub">predicted</div></div><div class="d-card outline"><div class="fr-kicker" style="color:var(--good)">Where this comes from</div><div class="prow"><span class="l">Predicted time</span><span class="r"><b>1:42 &ndash; 1:48</b><i>Cadence&rsquo;s Prediction Model</i></span></div><div class="prow"><span class="l">Elevation</span><span class="r"><b>80 m</b><i>bmovanmarathon.ca &middot; verified</i></span></div><div class="prow"><span class="l">Surface</span><span class="r"><b>road</b><i>tagged from the course &middot; verified</i></span></div><div class="prow"><span class="l">Your pace data</span><span class="r"><b>current</b><i>from Strava &middot; synced 3 hours ago</i></span></div></div><div class="d-card outline"><div class="fr-row"><span>Confidence</span><span class="fr-tag">Well-Calibrated</span></div><div class="fr-meter"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div></div></div></div>
     </div>
   </section>
 
