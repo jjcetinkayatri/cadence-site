@@ -191,10 +191,10 @@
     <div class="faq-list">
       <details class="faq-item" open>
         <summary>
-          <span>I entered my power/pace data manually. If I connect Strava later, does it get overwritten?</span>
+          <span>If I correct a number, will it get overwritten?</span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </summary>
-        <div class="faq-answer">No. Cadence keeps whichever number is better, field by field. If your manual entry is already your real best effort, Strava syncing in afterward won't replace it. Only a genuinely better activity from Strava updates that specific number. Each field also shows exactly where it came from, so you always know.</div>
+        <div class="faq-answer">No. Nothing in Cadence changes a number you typed or corrected unless you change it. Each field also shows exactly where it came from, so you always know.</div>
       </details>
       <details class="faq-item">
         <summary>
@@ -222,7 +222,7 @@
           <span>Is Free's accuracy worse than Season's?</span>
           <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </summary>
-        <div class="faq-answer">No. The prediction model is the same on both plans: the same inputs give the same confidence tier, limiter, and predicted range. Season adds unlimited tracking, Strava auto-sync, season planning, and your track record. You can type the same numbers in on Free; Strava sync just saves you the typing. Accuracy is never a paid feature.</div>
+        <div class="faq-answer">No. The prediction model is the same on both plans: the same inputs give the same confidence tier, limiter, and predicted range. Season adds unlimited tracking, a focus and peak race, race-day targets, season planning with dated taper and recovery windows, and your track record. Your predicted range is the same on both. Accuracy is never a paid feature.</div>
       </details>
       <details class="faq-item">
         <summary>
@@ -241,12 +241,12 @@
           <p style="margin:0 0 6px;"><strong>Trust tier:</strong></p>
           <ul style="margin:0 0 10px; padding-left:18px;">
             <li><strong>Measured</strong> &ndash; a real recorded effort, not an estimate (your max heart rate, or an FTP backed by an actual power-curve reading).</li>
-            <li><strong>Self-reported</strong> &ndash; a number you typed in that isn't backed by that kind of underlying data yet (Weight is always this, since Strava has no weight field to sync). Still used for predictions, just with wider bands until confirmed.</li>
+            <li><strong>Self-reported</strong> &ndash; a number you typed in that isn't backed by that kind of underlying data yet. Still used for predictions, just with wider bands until confirmed.</li>
             <li><strong>Corrected by you</strong> &ndash; you used &quot;This looks wrong&quot; to override what the app had on file.</li>
             <li><strong>Verified</strong> &ndash; shown for race results once you've confirmed at least one real finish time.</li>
             <li><strong>Missing</strong> &ndash; nothing on file yet for that field.</li>
           </ul>
-          <p style="margin:0 0 6px;"><strong>Source:</strong> &quot;Entered by you&quot; or &quot;Synced from Strava&quot;. Literally where that number came from. Weight always shows &quot;Entered by you,&quot; even with Strava connected, since Strava's API never provides it.</p>
+          <p style="margin:0 0 6px;"><strong>Source:</strong> &quot;Entered by you&quot; or &quot;Synced earlier&quot; (a figure that arrived through a connection older versions of Cadence offered). Literally where that number came from.</p>
           <p style="margin:0;">A small colored dot beside a measurement shows how recent it is, and turns amber as it ages, since the model trusts an old number a little less than a fresh one.</p>
         </div>
       </details>

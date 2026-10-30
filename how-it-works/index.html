@@ -189,8 +189,7 @@
   .platbadge { width: 26px; height: 26px; border-radius: 8px; background: var(--surface-alt); border: 1px solid var(--divider); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex: none; }
   .platmid { flex: 1; min-width: 0; } .platmid b { display: block; font-size: 12px; } .platmid span { font-size: 10px; color: var(--meta); }
   .smallbtn { font-size: 10.5px; font-weight: 600; border: 1px solid var(--divider); border-radius: 8px; padding: 4px 9px; color: var(--text); }
-  /* Strava's official button, shown unscaled (48px tall at 1x) per their brand guidelines. */
-  .strava-official { display: block; height: 48px; width: auto; max-width: 100%; margin: 2px 0 0; }
+  
 
   /* Taper guidance mockup */
   .sp-kicker { font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--good); }
@@ -317,27 +316,21 @@
         </div>
         <div class="step-text">
           <p class="step-eyebrow">Step 1</p>
-          <h2>Start with your real training data</h2>
-          <p>Connect Strava and Cadence reads your recent rides and runs, so your power curve and pace come from real training &mdash; read-only, and limited to your own activities. More platforms are on the way: tell us which one you want. Prefer to type it in? Manual works too; every self-reported number says so, with wider bands until it's confirmed.</p>
+          <h2>Start with your own numbers</h2>
+          <p>Type in the numbers you know. Every self-reported number says so, with wider bands until a race result confirms it. Connecting a watch or training platform is not available yet: tell us which one you want and we build them in the order people ask.</p>
         </div>
         <div class="step-device">
           <div class="device">
-            <div class="device-header">Connect your data</div>
+            <div class="device-header">Your data</div>
             <div class="device-body">
-              <div class="fr-kicker" style="margin:2px 2px 0;">Available now</div>
-              <div class="d-card">
-                <div class="platrow"><div class="platbadge">S</div><div class="platmid"><b>Strava</b><span>Rides and runs &middot; read-only</span></div></div>
-                <img class="strava-official" src="/img/strava-connect-orange.png" srcset="/img/strava-connect-orange.png 1x, /img/strava-connect-orange@2x.png 2x" width="237" height="48" alt="Connect with Strava">
-                <div class="fr-note">Compatible with Strava</div>
-              </div>
-              <div class="fr-kicker" style="margin:6px 2px 0;">Coming soon</div>
+              <div class="fr-kicker" style="margin:2px 2px 0;">Coming soon</div>
               <div class="d-card outline">
                 <div class="platrow"><div class="platbadge">C</div><div class="platmid"><b>COROS</b><span>Tell us you want it</span></div><span class="smallbtn">Request</span></div>
                 <div class="platrow"><div class="platbadge">G</div><div class="platmid"><b>Garmin</b><span>Tell us you want it</span></div><span class="smallbtn">Request</span></div>
                 <div class="platrow"><div class="platbadge">Su</div><div class="platmid"><b>Suunto</b><span>Tell us you want it</span></div><span class="smallbtn">Request</span></div>
               </div>
               <div class="d-card outline">
-                <div class="fr-kicker">Or enter manually</div>
+                <div class="fr-kicker">Enter manually</div>
                 <div class="fr-row"><span><span class="cd-dot warn"></span>FTP</span><span class="tier-tag">Self-reported</span></div>
                 <div class="fr-row" style="margin-top:6px;"><span><span class="cd-dot good"></span>Max HR</span><span class="tier-tag">Measured</span></div>
                 <div class="fr-row" style="margin-top:6px;"><span>Weight</span><span class="tier-tag">Self-reported</span></div>
